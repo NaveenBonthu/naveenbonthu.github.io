@@ -1,0 +1,2067 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bonthu Venkata Naveen — AI &amp; Automation Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0A0E14;
+    --panel:#0D1117;
+    --panel-alt:#111826;
+    --border:#1F2733;
+    --border-bright:#2B3647;
+    --text:#C9D1D9;
+    --text-bright:#F0F3F7;
+    --text-dim:#6E7681;
+    --green:#3FB950;
+    --amber:#FF9F1C;
+    --cyan:#4FD1C5;
+    --violet:#7C83FD;
+    --red:#F85149;
+    --font-mono:'JetBrains Mono', monospace;
+    --font-body:'IBM Plex Sans', sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important;}
+  }
+  body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-height:1.65;}
+  a{color:inherit;text-decoration:none;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px;}
+  ::selection{background:rgba(63,185,80,0.3);}
+
+  .grid-bg{
+    position:fixed;inset:0;z-index:0;pointer-events:none;
+    background-image:linear-gradient(var(--border) 1px, transparent 1px),linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size:56px 56px;opacity:0.18;
+    mask-image:radial-gradient(ellipse 80% 60% at 50% 0%, black 0%, transparent 70%);
+  }
+
+  /* AI ambient glow layer */
+  .ai-glow{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+  .ai-glow span{position:absolute;border-radius:50%;filter:blur(90px);opacity:0.16;animation:drift 22s ease-in-out infinite;}
+  .ai-glow span:nth-child(1){width:420px;height:420px;background:var(--green);top:-8%;left:8%;animation-delay:0s;}
+  .ai-glow span:nth-child(2){width:380px;height:380px;background:var(--cyan);top:30%;right:2%;animation-delay:-8s;}
+  .ai-glow span:nth-child(3){width:340px;height:340px;background:var(--violet);bottom:-6%;left:34%;animation-delay:-15s;}
+  @keyframes drift{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(30px,-24px) scale(1.08);}}
+  @media (prefers-reduced-motion: reduce){.ai-glow span{animation:none;}}
+
+  /* SCROLL PROGRESS */
+  .scroll-progress{position:fixed;top:0;left:0;height:2px;width:0%;background:linear-gradient(90deg,var(--green),var(--cyan));z-index:200;transition:width .1s linear;box-shadow:0 0 8px rgba(63,185,80,0.6);}
+
+  /* NAV */
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,14,20,0.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:56px;}
+  .traffic{display:flex;gap:6px;margin-right:14px;}
+  .traffic span{width:10px;height:10px;border-radius:50%;display:inline-block;transition:transform .2s, box-shadow .2s;}
+  .traffic .r{background:#F85149;} .traffic .y{background:#FF9F1C;} .traffic .g{background:#3FB950;}
+  nav:hover .traffic span{transform:scale(1.15);}
+  .nav-brand{display:flex;align-items:center;font-family:var(--font-mono);font-weight:600;font-size:13px;color:var(--text-bright);}
+  .nav-links{display:flex;gap:24px;font-size:12.5px;font-family:var(--font-mono);}
+  .nav-links a{color:var(--text-dim);transition:color .25s;position:relative;padding-bottom:3px;}
+  .nav-links a::after{content:'';position:absolute;left:0;bottom:0;width:0%;height:1px;background:var(--green);transition:width .25s ease;}
+  .nav-links a:hover{color:var(--green);}
+  .nav-links a:hover::after{width:100%;}
+  .nav-links a.active{color:var(--green);}
+  .nav-links a.active::after{width:100%;}
+  .nav-cta{font-family:var(--font-mono);font-size:11.5px;color:var(--bg);background:var(--green);padding:7px 14px;border-radius:4px;font-weight:600;transition:transform .2s, box-shadow .2s;border:none;cursor:pointer;}
+  .nav-cta:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(63,185,80,0.35);}
+  @media (max-width:820px){.nav-links{display:none;}}
+
+  /* CONNECT DROPDOWN */
+  .connect-wrap{position:relative;}
+  .connect-menu{
+    position:absolute;top:calc(100% + 10px);right:0;width:210px;
+    background:var(--panel);border:1px solid var(--border-bright);border-radius:8px;
+    box-shadow:0 16px 40px rgba(0,0,0,0.45);overflow:hidden;
+    opacity:0;transform:translateY(8px) scale(.97);pointer-events:none;
+    transition:opacity .2s ease, transform .2s ease;z-index:120;
+  }
+  .connect-menu.open{opacity:1;transform:translateY(0) scale(1);pointer-events:auto;}
+  .connect-item{
+    display:flex;align-items:center;gap:10px;width:100%;text-align:left;
+    padding:10px 14px;font-family:var(--font-mono);font-size:12px;color:var(--text);
+    background:none;border:none;border-bottom:1px solid var(--border);cursor:pointer;
+    transition:background .2s, color .2s, padding-left .2s;
+  }
+  .connect-item:last-child{border-bottom:none;}
+  .connect-item:hover{background:rgba(63,185,80,0.08);color:var(--green);padding-left:18px;}
+  .connect-item .ci-icon{width:16px;flex-shrink:0;text-align:center;}
+  .connect-item.copied{color:var(--green);}
+
+  /* TERMINAL WINDOW COMPONENT */
+  .term{background:var(--panel);border:1px solid var(--border);border-radius:8px;overflow:hidden;transition:border-color .3s, box-shadow .3s;}
+  .term:hover{border-color:var(--border-bright);box-shadow:0 10px 26px rgba(0,0,0,0.3);}
+  .term-bar{display:flex;align-items:center;gap:10px;padding:10px 16px;background:var(--panel-alt);border-bottom:1px solid var(--border);}
+  .term-title{font-family:var(--font-mono);font-size:11.5px;color:var(--text-dim);margin-left:4px;}
+  .term-body{padding:22px 24px;}
+  .prompt{font-family:var(--font-mono);font-size:13px;color:var(--green);}
+  .prompt .cmd{color:var(--text-bright);}
+  .cursor{display:inline-block;width:7px;height:14px;background:var(--green);margin-left:4px;animation:blink 1s step-end infinite;vertical-align:middle;}
+  @keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+
+  /* HERO */
+  header.hero{padding:132px 0 70px;position:relative;z-index:1;}
+  .status-line{
+    font-family:var(--font-mono);font-size:11.5px;color:var(--green);display:flex;align-items:center;gap:8px;
+    margin-bottom:22px;letter-spacing:0.04em;animation:rise .6s ease both;
+  }
+  .status-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse-dot 2.2s ease-in-out infinite;}
+  @keyframes pulse-dot{0%,100%{opacity:1;}50%{opacity:0.3;}}
+  @keyframes rise{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+
+  .hero-grid{display:grid;grid-template-columns:1.15fr 1fr;gap:40px;align-items:start;}
+  .hero-left h1{
+    font-family:var(--font-mono);font-weight:700;font-size:clamp(28px,4.4vw,44px);color:var(--text-bright);
+    line-height:1.25;animation:rise .7s ease both;animation-delay:.1s;
+  }
+  .hero-left h1 .hl{color:var(--green);}
+  .hero-tag{
+    font-family:var(--font-mono);font-size:14.5px;color:var(--text-dim);margin-top:16px;line-height:1.7;max-width:52ch;
+    animation:rise .7s ease both;animation-delay:.2s;
+  }
+  .hero-tag .tag-hl{color:var(--amber);}
+  .hero-actions{display:flex;gap:12px;margin-top:30px;flex-wrap:wrap;animation:rise .7s ease both;animation-delay:.3s;}
+  .btn{font-family:var(--font-mono);font-size:12.5px;font-weight:600;padding:12px 18px;border-radius:5px;border:1px solid var(--border-bright);transition:transform .2s, box-shadow .2s, border-color .2s, color .2s, background .2s;display:inline-flex;align-items:center;gap:8px;}
+  .btn-primary{background:var(--green);color:#04140a;border-color:var(--green);animation:cta-pulse 3.2s ease-in-out infinite;}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(63,185,80,0.25);animation-play-state:paused;}
+  @keyframes cta-pulse{0%,100%{box-shadow:0 0 0 0 rgba(63,185,80,0.28);}50%{box-shadow:0 0 0 8px rgba(63,185,80,0);}}
+  .btn-primary:active{transform:translateY(0);box-shadow:0 4px 10px rgba(63,185,80,0.2);}
+  .btn-ghost{color:var(--text);}
+  .btn-ghost:hover{border-color:var(--green);color:var(--green);transform:translateY(-2px);box-shadow:0 8px 18px rgba(63,185,80,0.12);}
+  .btn-ghost:active{transform:translateY(0);}
+
+  .modules{display:flex;flex-wrap:wrap;gap:8px;margin-top:34px;animation:rise .7s ease both;animation-delay:.4s;}
+  .modules span{font-family:var(--font-mono);font-size:10.5px;color:var(--text-dim);border:1px solid var(--border);padding:4px 9px;border-radius:3px;}
+
+  .hero-right{animation:rise .8s ease both;animation-delay:.25s;}
+  .code-line{display:flex;gap:14px;padding:2px 0;}
+  .ln{color:var(--text-dim);width:16px;text-align:right;flex-shrink:0;user-select:none;font-size:12.5px;font-family:var(--font-mono);}
+  .code{font-family:var(--font-mono);font-size:12.5px;white-space:pre;}
+  .kw{color:var(--violet);} .fn{color:var(--cyan);} .str{color:var(--amber);} .prop{color:#79C0FF;} .com{color:var(--text-dim);}
+
+  /* SECTION shared */
+  section{position:relative;z-index:1;padding:104px 0;border-bottom:1px solid var(--border);}
+  .sec-head{display:flex;align-items:center;gap:12px;margin-bottom:44px;font-family:var(--font-mono);}
+  .sec-head .pfx{color:var(--green);font-size:16px;text-shadow:0 0 10px rgba(63,185,80,0.6);}
+  .sec-head h2{font-size:22px;font-weight:700;letter-spacing:-.01em;
+    background:linear-gradient(90deg, var(--text-bright) 40%, var(--cyan));
+    -webkit-background-clip:text;background-clip:text;color:transparent;}
+  .sec-head .path{color:var(--text-dim);font-size:12px;}
+
+  /* ABOUT */
+  .about-grid{display:grid;grid-template-columns:230px 1fr;gap:36px;}
+  .avatar-card{border:1px solid var(--border);border-radius:8px;background:var(--panel);overflow:hidden;transition:border-color .3s;}
+  .avatar-card:hover{border-color:var(--amber);}
+  .avatar-box{
+    width:100%;aspect-ratio:1;display:flex;align-items:center;justify-content:center;
+    background:var(--panel-alt);border-bottom:1px solid var(--border);position:relative;padding:28px 0;
+  }
+  .avatar-ring{
+    position:relative;width:64%;aspect-ratio:1;border-radius:50%;
+    background:conic-gradient(from 200deg, var(--amber), rgba(255,159,28,0.15) 45%, var(--amber) 100%);
+    padding:3px;box-shadow:0 0 24px rgba(255,159,28,0.25);
+    animation:pulse-ring 3.4s ease-in-out infinite;
+    transition:box-shadow .3s;
+  }
+  .avatar-box:hover .avatar-ring{box-shadow:0 0 40px rgba(255,159,28,0.5);}
+  @keyframes pulse-ring{0%,100%{box-shadow:0 0 24px rgba(255,159,28,0.25);}50%{box-shadow:0 0 34px rgba(255,159,28,0.4);}}
+  .avatar-box img{
+    width:100%;height:100%;border-radius:50%;object-fit:cover;
+    display:block;border:3px solid var(--panel-alt);
+  }
+  .avatar-status{
+    position:absolute;right:0;bottom:2%;width:16px;height:16px;border-radius:50%;
+    background:var(--green);border:3px solid var(--panel-alt);box-shadow:0 0 8px var(--green);
+  }
+  .avatar-meta{padding:14px 16px;font-family:var(--font-mono);font-size:11px;}
+  .avatar-meta div{display:flex;justify-content:space-between;padding:5px 0;color:var(--text-dim);}
+  .avatar-meta div b{color:var(--text);font-weight:500;}
+  .avatar-meta .online{color:var(--green);}
+
+  .about-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:28px;}
+  .about-stats .stat-card{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:18px 16px;transition:border-color .25s, transform .25s;}
+  .about-stats .stat-card:hover{border-color:var(--amber);transform:translateY(-2px);}
+  .stat-icon{width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:14px;margin-bottom:14px;}
+  .about-stats .n{font-family:var(--font-mono);font-size:22px;font-weight:700;color:var(--text-bright);}
+  .about-stats .l{font-family:var(--font-mono);font-size:9.5px;color:var(--text-dim);margin-top:5px;text-transform:uppercase;letter-spacing:.05em;}
+
+  .whoami-body p{color:var(--text);font-size:14px;margin-bottom:6px;}
+  .whoami-block{margin-bottom:22px;}
+  .whoami-block:last-child{margin-bottom:0;}
+
+  @media (max-width:820px){.about-grid, .hero-grid{grid-template-columns:1fr;} .about-stats{grid-template-columns:repeat(2,1fr);}}
+
+  /* SKILLS */
+  .skills-term .term-body{padding:0;}
+  .skill-row{display:grid;grid-template-columns:200px 1fr;border-bottom:1px solid var(--border);padding:16px 24px;gap:16px;}
+  .skill-row:last-child{border-bottom:none;}
+  .skill-key{font-family:var(--font-mono);font-size:12.5px;color:#79C0FF;padding-top:2px;}
+  .skill-vals{display:flex;flex-wrap:wrap;gap:7px;}
+  .skill-vals span{font-family:var(--font-mono);font-size:11.5px;color:var(--amber);border:1px solid rgba(255,159,28,0.25);background:rgba(255,159,28,0.06);padding:4px 9px;border-radius:3px;transition:transform .2s, border-color .2s, background .2s;}
+  .skill-vals span:hover{transform:translateY(-2px) scale(1.05);border-color:var(--amber);background:rgba(255,159,28,0.14);}
+  .skill-row{transition:background .25s;}
+  .skill-row:hover{background:rgba(255,255,255,0.015);}
+
+  /* EXPERIENCE - git log style */
+  .commit{padding:20px 0;border-bottom:1px solid var(--border);display:flex;gap:20px;transition:padding-left .3s;}
+  .commit:last-child{border-bottom:none;}
+  .commit:hover{padding-left:8px;}
+  .commit-graph{width:14px;display:flex;flex-direction:column;align-items:center;flex-shrink:0;padding-top:5px;}
+  .commit-dot{width:10px;height:10px;border-radius:50%;background:var(--green);box-shadow:0 0 0 3px rgba(63,185,80,0.15);flex-shrink:0;animation:pulse-dot 2.4s ease-in-out infinite;}
+  .commit-line{width:1px;flex-grow:1;background:var(--border-bright);margin-top:4px;}
+  .commit-hash{font-family:var(--font-mono);font-size:11.5px;color:var(--violet);}
+  .commit-meta{font-family:var(--font-mono);font-size:11px;color:var(--text-dim);margin-top:2px;}
+  .commit-title{font-size:15.5px;font-weight:600;color:var(--text-bright);margin-top:8px;}
+  .commit-org{font-family:var(--font-mono);font-size:12px;color:var(--text-dim);margin-top:3px;}
+  .commit-desc{font-size:13.5px;color:var(--text);margin-top:10px;max-width:70ch;}
+  .commit-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;}
+  .commit-tags span{font-family:var(--font-mono);font-size:10.5px;color:#79C0FF;border:1px solid rgba(121,192,255,0.25);padding:3px 8px;border-radius:3px;display:inline-block;transition:transform .2s, background .2s;}
+  .commit-tags span:hover{transform:translateY(-2px);background:rgba(121,192,255,0.12);}
+  .commit-stats{display:flex;gap:16px;margin-top:12px;font-family:var(--font-mono);font-size:12px;}
+  .commit-stats .plus{color:var(--green);}
+  .commit-stats .minus{color:var(--red);}
+
+  /* PROJECT / REPO CARDS */
+  .repo-list{display:flex;flex-direction:column;gap:14px;}
+  .repo-card{border:1px solid var(--border);border-radius:8px;background:var(--panel);padding:22px 24px;transition:border-color .3s, transform .3s, box-shadow .3s;}
+  .repo-card:hover{border-color:var(--green);transform:translateY(-3px);box-shadow:0 14px 34px rgba(0,0,0,0.35),0 0 0 1px rgba(63,185,80,0.15);}
+  .repo-card:hover .repo-name{color:var(--green);}
+  .repo-name{transition:color .25s;}
+  .repo-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .repo-name{font-family:var(--font-mono);font-size:15px;font-weight:700;color:#79C0FF;}
+  .repo-badge{font-family:var(--font-mono);font-size:10px;border:1px solid var(--border-bright);color:var(--text-dim);padding:2px 8px;border-radius:10px;}
+  .repo-desc{color:var(--text);font-size:13.5px;margin:12px 0 14px;max-width:80ch;}
+  .repo-flow-list{list-style:none;padding:0;margin:0 0 14px 0;counter-reset:s;}
+  .repo-flow-list li{counter-increment:s;font-size:13px;color:var(--text-dim);padding-left:24px;position:relative;margin-bottom:8px;}
+  .repo-flow-list li::before{content:counter(s);position:absolute;left:0;top:0;width:16px;height:16px;border-radius:3px;background:rgba(63,185,80,0.12);color:var(--green);font-family:var(--font-mono);font-size:9.5px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+  .repo-foot{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;margin-top:14px;padding-top:14px;border-top:1px solid var(--border);}
+  .repo-lang{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+  .repo-lang span{font-family:var(--font-mono);font-size:11px;color:var(--text-dim);}
+  .lang-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:5px;}
+  .repo-metrics{display:flex;gap:16px;font-family:var(--font-mono);font-size:11.5px;color:var(--text-dim);}
+  .repo-metrics b{color:var(--green);}
+  .repo-stack{display:flex;flex-wrap:wrap;gap:6px;}
+  .repo-stack span{font-family:var(--font-mono);font-size:10.5px;color:var(--amber);border:1px solid rgba(255,159,28,0.25);background:rgba(255,159,28,0.06);padding:3px 8px;border-radius:3px;display:inline-block;transition:transform .2s, background .2s;}
+  .repo-stack span:hover{transform:translateY(-2px);background:rgba(255,159,28,0.14);}
+
+  /* BLOG */
+  .blog-card .repo-desc{margin-bottom:12px;}
+  .blog-meta{display:flex;gap:14px;font-family:var(--font-mono);font-size:10.5px;color:var(--text-dim);margin-bottom:10px;}
+  .blog-toggle{font-family:var(--font-mono);font-size:11.5px;color:var(--green);background:none;border:none;cursor:pointer;padding:0;display:inline-flex;align-items:center;gap:5px;transition:gap .2s, color .2s;}
+  .blog-toggle:hover{gap:9px;color:var(--cyan);}
+  .blog-body{max-height:0;overflow:hidden;transition:max-height .4s ease, margin-top .4s ease;font-size:13px;color:var(--text);line-height:1.7;}
+  .blog-body p{margin-bottom:10px;}
+  .blog-body.open{max-height:900px;margin-top:14px;}
+
+  /* CHATBOT WIDGET */
+  .chat-fab{position:fixed;bottom:24px;right:24px;width:52px;height:52px;border-radius:50%;background:var(--green);color:#04140a;border:none;display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;box-shadow:0 8px 24px rgba(63,185,80,0.35);z-index:150;transition:transform .25s, box-shadow .25s;}
+  .chat-fab:hover{transform:scale(1.08);box-shadow:0 10px 30px rgba(63,185,80,0.5);}
+  .chat-fab .dot{position:absolute;top:6px;right:6px;width:9px;height:9px;border-radius:50%;background:var(--cyan);box-shadow:0 0 0 2px var(--bg);}
+  .chat-fab .cb-eye{animation:cb-blink 3.6s ease-in-out infinite;transform-box:fill-box;}
+  .chat-fab .cb-eye.r{animation-delay:.08s;}
+  @keyframes cb-blink{0%,92%,100%{transform:scaleY(1);}96%{transform:scaleY(0.15);}}
+  .chat-fab.jump{animation:fab-jump .5s ease;}
+  @keyframes fab-jump{0%{transform:translateY(0) scale(1);}30%{transform:translateY(-10px) scale(1.04,0.96);}55%{transform:translateY(2px) scale(0.97,1.04);}100%{transform:translateY(0) scale(1);}}
+  @media (prefers-reduced-motion: reduce){.chat-fab .cb-eye{animation:none;} .chat-fab.jump{animation:none;}}
+  .chat-panel{position:fixed;bottom:88px;right:24px;width:320px;max-height:420px;background:var(--panel);border:1px solid var(--border-bright);border-radius:10px;box-shadow:0 20px 50px rgba(0,0,0,0.5);z-index:150;display:flex;flex-direction:column;overflow:hidden;transform:translateY(12px) scale(.97);opacity:0;pointer-events:none;transition:transform .25s ease, opacity .25s ease;}
+  .chat-panel.open{transform:translateY(0) scale(1);opacity:1;pointer-events:auto;}
+  .chat-head{background:var(--panel-alt);border-bottom:1px solid var(--border);padding:12px 14px;font-family:var(--font-mono);font-size:12px;color:var(--text-bright);display:flex;align-items:center;gap:8px;}
+  .chat-avatar{width:22px;height:22px;border-radius:50%;object-fit:cover;border:1px solid var(--border-bright);}
+  .chat-head .status-dot{width:7px;height:7px;border-radius:50%;background:var(--green);}
+  .chat-body{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;font-family:var(--font-mono);font-size:12px;}
+  .chat-msg{background:var(--panel-alt);border:1px solid var(--border);border-radius:8px;padding:9px 11px;line-height:1.6;color:var(--text);max-width:88%;}
+  .chat-msg.bot{align-self:flex-start;}
+  .chat-msg.user{align-self:flex-end;background:rgba(63,185,80,0.1);border-color:rgba(63,185,80,0.3);color:var(--text-bright);}
+  .chat-suggestions{display:flex;flex-direction:column;gap:6px;padding:10px 14px;border-top:1px solid var(--border);}
+  .chat-suggestions button{text-align:left;font-family:var(--font-mono);font-size:11px;color:var(--green);background:rgba(63,185,80,0.06);border:1px solid rgba(63,185,80,0.2);border-radius:5px;padding:7px 9px;cursor:pointer;transition:background .2s, transform .2s;}
+  .chat-suggestions button:hover{background:rgba(63,185,80,0.15);transform:translateX(2px);}
+  @media (max-width:480px){.chat-panel{width:calc(100vw - 32px);right:16px;}.chat-fab{right:16px;}}
+  .chat-fab-label{
+    position:fixed;bottom:38px;right:86px;z-index:149;
+    font-family:var(--font-mono);font-size:11px;color:var(--text-bright);
+    background:var(--panel);border:1px solid var(--border-bright);
+    padding:6px 11px;border-radius:6px;white-space:nowrap;
+    box-shadow:0 6px 16px rgba(0,0,0,0.35);
+    opacity:0;transform:translateY(6px);
+    animation:rise .5s ease both;animation-delay:1.1s;
+    transition:opacity .2s ease, transform .2s ease;
+  }
+  .chat-fab-label::after{
+    content:'';position:absolute;top:50%;right:-5px;transform:translateY(-50%) rotate(45deg);
+    width:9px;height:9px;background:var(--panel);border-right:1px solid var(--border-bright);border-top:1px solid var(--border-bright);
+  }
+  .chat-fab-label.hide{opacity:0;transform:translateY(6px);pointer-events:none;}
+  .chat-fab-label .lbl-cursor{display:inline-block;width:2px;height:11px;background:var(--green);margin-left:2px;vertical-align:middle;animation:blink 0.9s step-end infinite;}
+  .chat-fab-label .lbl-cursor.done{display:none;}
+  @media (max-width:480px){.chat-fab-label{right:74px;}}
+
+  /* CURSOR ROBOT COMPANION */
+  .cursor-bot{
+    position:fixed;top:0;left:0;width:26px;height:32px;z-index:90;
+    pointer-events:none;will-change:transform;
+    filter:drop-shadow(0 2px 6px rgba(63,185,80,0.35));
+    opacity:0;transition:opacity .3s ease;
+  }
+  .cursor-bot.active{opacity:1;}
+  .cursor-bot svg{width:100%;height:100%;display:block;}
+  .cursor-bot .cb-eye{animation:cb-blink 3.4s ease-in-out infinite;}
+  @keyframes cb-blink{0%,92%,100%{transform:scaleY(1);}96%{transform:scaleY(0.15);}}
+  .cb-leg{transform-box:fill-box;transform-origin:top center;}
+  .cb-leg-l{animation:cb-walk .46s ease-in-out infinite;}
+  .cb-leg-r{animation:cb-walk .46s ease-in-out infinite reverse;}
+  @keyframes cb-walk{0%,100%{transform:rotate(20deg);}50%{transform:rotate(-20deg);}}
+  .cursor-bot.idle-legs .cb-leg{animation-play-state:paused;}
+  .pow-burst{
+    position:fixed;z-index:95;pointer-events:none;
+    font-family:var(--font-mono);font-weight:800;font-size:15px;
+    color:var(--amber);letter-spacing:.02em;
+    text-shadow:0 0 6px rgba(255,159,28,0.7), 2px 2px 0 rgba(0,0,0,0.5);
+    -webkit-text-stroke:1px rgba(10,14,20,0.7);
+    animation:pow-pop .65s cubic-bezier(.2,.9,.3,1.3) forwards;
+  }
+  @keyframes pow-pop{
+    0%{opacity:0;transform:translate(-50%,-50%) scale(0.3) rotate(var(--pr,-8deg));}
+    30%{opacity:1;transform:translate(-50%,-50%) scale(1.15) rotate(var(--pr,-8deg));}
+    60%{opacity:1;transform:translate(-50%,-50%) scale(0.95) rotate(var(--pr,-8deg));}
+    100%{opacity:0;transform:translate(-50%,-58%) scale(0.85) rotate(var(--pr,-8deg));}
+  }
+  @media (hover:none), (pointer:coarse){.cursor-bot,.pow-burst{display:none;}}
+  @media (prefers-reduced-motion: reduce){.cursor-bot,.pow-burst{display:none;}}
+
+  /* AMBIENT WANDERING ROBOTS (roam the whole page, occasionally kung-fu duel) */
+  .amb-bot{
+    position:absolute;top:0;left:0;width:24px;height:30px;z-index:80;
+    pointer-events:none;filter:drop-shadow(0 2px 5px rgba(0,0,0,0.35));
+    transition:left 2.6s cubic-bezier(.45,.05,.55,.95), top 2.6s cubic-bezier(.45,.05,.55,.95);
+  }
+  .amb-bot svg{width:100%;height:100%;display:block;}
+  .amb-bot-face{width:100%;height:100%;transition:transform .3s ease;}
+  .amb-bot-face.flip{transform:scaleX(-1);}
+  .amb-bot-anim{width:100%;height:100%;}
+  .amb-bot-anim.hop{animation:amb-hop .32s ease;}
+  .amb-bot-anim.recoil{animation:amb-recoil .28s ease;}
+  @keyframes amb-hop{0%,100%{transform:translateY(0);}45%{transform:translateY(-10px);}}
+  @keyframes amb-recoil{0%,100%{transform:translateX(0);}50%{transform:translateX(5px);}}
+  .amb-bot .cb-leg, .amb-bot .cb-arm{transform-box:fill-box;transform-origin:top center;}
+  .amb-bot.walking .cb-leg-l{animation:cb-walk .46s ease-in-out infinite;}
+  .amb-bot.walking .cb-leg-r{animation:cb-walk .46s ease-in-out infinite reverse;}
+  .amb-bot .cb-leg-r.kick, .amb-bot .cb-leg-l.kick{animation:amb-kick .32s ease;}
+  .amb-bot .cb-arm-r.punch, .amb-bot .cb-arm-l.punch{animation:amb-punch .26s ease;}
+  @keyframes amb-kick{0%{transform:rotate(0deg);}45%{transform:rotate(85deg);}100%{transform:rotate(0deg);}}
+  @keyframes amb-punch{0%{transform:rotate(0deg);}50%{transform:rotate(-95deg);}100%{transform:rotate(0deg);}}
+  .pow-burst.doc{position:absolute;}
+  @media (hover:none), (pointer:coarse){.amb-bot{display:none;}}
+  @media (prefers-reduced-motion: reduce){.amb-bot{display:none;}}
+
+  /* speech bubbles */
+  .amb-speech{
+    position:absolute;bottom:100%;left:50%;transform:translateX(-50%) translateY(4px) scale(.85);
+    margin-bottom:6px;background:var(--panel);border:1px solid var(--border-bright);
+    border-radius:6px;padding:3px 7px;font-family:var(--font-mono);font-size:9px;
+    color:var(--text-bright);white-space:nowrap;opacity:0;pointer-events:none;
+    transition:opacity .2s ease, transform .2s ease;box-shadow:0 4px 10px rgba(0,0,0,0.35);
+  }
+  .amb-speech.show{opacity:1;transform:translateX(-50%) translateY(0) scale(1);}
+  .amb-speech::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);
+    border:4px solid transparent;border-top-color:var(--border-bright);}
+
+  /* section-aware "inspecting" indicator */
+  .amb-inspect{
+    position:absolute;top:-8px;right:-6px;font-size:11px;opacity:0;
+    transition:opacity .25s ease;
+  }
+  .amb-inspect.show{opacity:1;}
+
+  /* victory / defeat poses */
+  .amb-bot-anim.victory{animation:amb-victory .9s ease;}
+  @keyframes amb-victory{
+    0%{transform:translateY(0) rotate(0deg);}
+    20%{transform:translateY(-12px) rotate(-10deg);}
+    40%{transform:translateY(0) rotate(10deg);}
+    60%{transform:translateY(-8px) rotate(-10deg);}
+    80%{transform:translateY(0) rotate(6deg);}
+    100%{transform:translateY(0) rotate(0deg);}
+  }
+  .amb-bot-face.defeat{transform:rotate(90deg) translateY(2px);}
+  .amb-bot-face.defeat.flip{transform:scaleX(-1) rotate(90deg) translateY(2px);}
+
+  /* boss robot (konami easter egg) */
+  .amb-bot.boss{width:40px;height:50px;z-index:85;}
+  .amb-bot.boss::before{
+    content:'👑';position:absolute;top:-16px;left:50%;transform:translateX(-50%);
+    font-size:16px;
+  }
+  .amb-bot.dance .amb-bot-anim{animation:amb-dance .5s ease-in-out infinite;}
+  @keyframes amb-dance{0%,100%{transform:translateY(0) rotate(-6deg);}50%{transform:translateY(-8px) rotate(6deg);}}
+
+  /* click-to-summon celebration */
+  .amb-bot-anim.wave .cb-arm-l{animation:amb-wave 1.1s ease-in-out 2;}
+  @keyframes amb-wave{0%,100%{transform:rotate(0deg);}50%{transform:rotate(-120deg);}}
+
+  /* mini leaderboard */
+  .bot-leaderboard{
+    position:fixed;bottom:24px;left:24px;font-family:var(--font-mono);font-size:11px;
+    color:var(--text-dim);background:var(--panel);border:1px solid var(--border);
+    border-radius:6px;padding:6px 10px;z-index:90;opacity:.85;pointer-events:none;
+  }
+  .bot-leaderboard b{color:var(--green);}
+  @media (max-width:640px){.bot-leaderboard{display:none;}}
+
+  /* day/night glow shift */
+  .bot-night-mode .amb-bot{filter:drop-shadow(0 2px 5px rgba(0,0,0,0.45)) drop-shadow(0 0 8px rgba(79,209,197,0.55));}
+  .bot-night-mode .cursor-bot{filter:drop-shadow(0 2px 6px rgba(63,185,80,0.55)) drop-shadow(0 0 10px rgba(63,185,80,0.5));}
+
+  /* health bars during a duel */
+  .amb-health{position:absolute;top:-14px;left:0;width:100%;height:4px;background:rgba(255,255,255,0.12);border-radius:2px;overflow:hidden;opacity:0;transition:opacity .2s ease;}
+  .amb-health.show{opacity:1;}
+  .amb-health-fill{height:100%;width:100%;background:var(--green);transition:width .25s ease, background .25s ease;}
+
+  /* accessory / costume drops */
+  .amb-bot.accessory .amb-bot-face::before{
+    content:attr(data-accessory);position:absolute;top:-11px;left:50%;transform:translateX(-50%);font-size:11px;z-index:2;
+  }
+
+  /* seasonal skin marker (santa hat / halloween mask) */
+  .amb-bot.seasonal .amb-bot-face::after{
+    content:attr(data-season);position:absolute;top:-12px;left:50%;transform:translateX(-50%);font-size:11px;z-index:2;
+  }
+
+  /* weather accessory (umbrella) */
+  .amb-bot.rain .amb-bot-face .amb-bot-anim::after{ }
+  .amb-umbrella{position:absolute;top:2px;left:-9px;font-size:12px;transform:rotate(-15deg);}
+
+  /* GitHub / sign speech variant */
+  .amb-speech.sign{background:#0D1117;border-color:var(--cyan);color:var(--cyan);}
+
+  /* rock-paper-scissors popup */
+  .amb-rps{
+    position:absolute;z-index:120;background:var(--panel);border:1px solid var(--border-bright);
+    border-radius:8px;padding:8px 10px;font-family:var(--font-mono);font-size:11px;color:var(--text-bright);
+    box-shadow:0 10px 26px rgba(0,0,0,0.45);transform:translate(-50%,-100%);text-align:center;min-width:130px;
+  }
+  .amb-rps .amb-rps-choices{display:flex;gap:6px;justify-content:center;margin-top:6px;}
+  .amb-rps button{background:rgba(63,185,80,0.08);border:1px solid rgba(63,185,80,0.3);border-radius:5px;
+    font-size:15px;padding:3px 7px;cursor:pointer;color:var(--text-bright);}
+  .amb-rps button:hover{background:rgba(63,185,80,0.18);}
+
+  /* fight-cam picture-in-picture */
+  .bot-fightcam{
+    position:fixed;bottom:24px;right:24px;width:150px;background:var(--panel);border:1px solid var(--border-bright);
+    border-radius:8px;padding:8px;z-index:150;box-shadow:0 10px 26px rgba(0,0,0,0.45);
+    font-family:var(--font-mono);font-size:10px;color:var(--text-dim);opacity:0;transform:translateY(8px);
+    transition:opacity .25s ease, transform .25s ease;pointer-events:none;
+  }
+  .bot-fightcam.show{opacity:1;transform:translateY(0);}
+  .bot-fightcam .fc-label{color:var(--amber);font-weight:700;margin-bottom:4px;text-align:center;}
+  .bot-fightcam .fc-row{display:flex;align-items:center;justify-content:center;gap:10px;}
+  .bot-fightcam .fc-row svg{width:34px;height:42px;}
+
+  /* settings panel */
+  .bot-settings-btn{
+    position:fixed;bottom:24px;left:190px;width:30px;height:30px;border-radius:50%;
+    background:var(--panel);border:1px solid var(--border);color:var(--text-dim);
+    display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;z-index:150;
+  }
+  .bot-settings-panel{
+    position:fixed;bottom:60px;left:24px;background:var(--panel);border:1px solid var(--border-bright);
+    border-radius:8px;padding:12px 14px;z-index:150;font-family:var(--font-mono);font-size:11px;
+    color:var(--text);box-shadow:0 10px 26px rgba(0,0,0,0.45);display:none;min-width:200px;
+  }
+  .bot-settings-panel.open{display:block;}
+  .bot-settings-panel label{display:block;margin-bottom:10px;}
+  .bot-settings-panel input[type=range]{width:100%;margin-top:4px;}
+  @media (max-width:640px){.bot-settings-btn, .bot-settings-panel{display:none;}}
+
+  /* cheer squad */
+  .amb-bot-anim.cheer{animation:amb-victory 1s ease;}
+
+  /* EDU / CERTS */
+  /* intro video: thumbnail + click-to-play modal */
+  .intro-video-block{margin-top:24px;display:flex;justify-content:center;}
+  .call-card{
+    max-width:320px;width:100%;background:linear-gradient(160deg, #0D1117, #101922);
+    border:1px solid var(--border-bright);border-radius:16px;padding:30px 20px 24px;
+    text-align:center;cursor:pointer;position:relative;overflow:hidden;
+    box-shadow:0 14px 34px rgba(0,0,0,0.4);transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .call-card:hover{transform:translateY(-3px);box-shadow:0 18px 40px rgba(0,0,0,0.5);}
+  .call-status{
+    font-family:var(--font-mono);font-size:11px;color:var(--green);letter-spacing:.04em;margin-bottom:20px;
+    display:flex;align-items:center;justify-content:center;gap:7px;text-transform:uppercase;
+  }
+  .call-status::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);animation:call-blink 1.2s ease-in-out infinite;}
+  @keyframes call-blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+  .call-avatar-wrap{position:relative;width:100px;height:100px;margin:0 auto 18px;}
+  .call-avatar{width:100px;height:100px;border-radius:50%;object-fit:cover;position:relative;z-index:2;border:2px solid var(--green);display:block;}
+  .call-ring{position:absolute;inset:0;border-radius:50%;border:2px solid var(--green);opacity:0;animation:call-pulse 2.2s ease-out infinite;}
+  .call-ring.delay{animation-delay:1.1s;}
+  @keyframes call-pulse{0%{transform:scale(1);opacity:.55;}100%{transform:scale(1.7);opacity:0;}}
+  .call-name{font-family:var(--font-mono);font-weight:600;color:var(--text-bright);font-size:15px;margin-bottom:4px;}
+  .call-sub{font-family:var(--font-mono);font-size:11.5px;color:var(--text-dim);margin-bottom:22px;}
+  .call-answer-btn{
+    display:inline-flex;align-items:center;gap:8px;background:var(--green);color:#04140a;border:none;
+    border-radius:24px;padding:11px 24px;font-family:var(--font-mono);font-weight:700;font-size:13px;cursor:pointer;
+    transition:transform .2s ease, box-shadow .2s ease;box-shadow:0 8px 20px rgba(63,185,80,0.35);
+  }
+  .call-answer-btn:hover{transform:scale(1.06);}
+  .call-answer-icon{font-size:15px;}
+
+  .video-modal{position:fixed;inset:0;background:rgba(4,7,10,0.86);z-index:300;display:none;align-items:center;justify-content:center;padding:20px;}
+  .video-modal.open{display:flex;}
+  .video-modal-inner{position:relative;max-width:820px;width:100%;background:#000;border-radius:10px;overflow:hidden;
+    border:1px solid var(--border-bright);box-shadow:0 24px 70px rgba(0,0,0,0.55);}
+  .video-modal-inner video{width:100%;max-height:80vh;display:block;background:#000;}
+  .video-modal-close{
+    position:absolute;top:10px;right:10px;width:32px;height:32px;border-radius:50%;z-index:2;
+    background:rgba(0,0,0,0.6);color:#fff;border:1px solid rgba(255,255,255,0.2);font-size:16px;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .video-modal-close:hover{background:var(--red);border-color:var(--red);}
+
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  @media (max-width:820px){.two-col{grid-template-columns:1fr;}}
+  .file-term .term-body{font-family:var(--font-mono);font-size:13px;}
+  .kv{display:flex;gap:8px;padding:4px 0;}
+  .kv .k{color:#79C0FF;}
+  .kv .v{color:var(--text);}
+  .cert-line{padding:6px 0;color:var(--text);font-size:13px;display:flex;gap:8px;transition:transform .2s, color .2s;}
+  .cert-line::before{content:'✓';color:var(--green);transition:transform .2s;}
+  .cert-line:hover{transform:translateX(4px);color:var(--text-bright);}
+  .cert-line:hover::before{transform:scale(1.3);}
+
+  /* CONTACT */
+  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+  @media (max-width:820px){.contact-grid{grid-template-columns:1fr;}}
+  .contact-line{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);font-family:var(--font-mono);font-size:12.5px;transition:padding-left .25s;}
+  .contact-line:last-child{border-bottom:none;}
+  .contact-line a{color:var(--cyan);transition:color .2s;}
+  .contact-line:hover{padding-left:6px;}
+  .contact-line:hover a{color:var(--green);}
+  .contact-line .arrow{color:var(--green);display:inline-block;transition:transform .25s;}
+  .contact-line:hover .arrow{transform:translateX(3px);}
+
+  /* CONTACT ICON CARDS */
+  .contact-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:28px;}
+  @media (max-width:480px){.contact-cards{grid-template-columns:1fr;}}
+  .contact-card{
+    display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:8px;
+    background:var(--panel);border:1px solid var(--border);
+    transition:transform .2s, border-color .2s, box-shadow .2s;
+  }
+  .contact-card:hover{transform:translateY(-3px);border-color:var(--green);box-shadow:0 10px 24px rgba(63,185,80,0.15);}
+  .contact-card .cc-icon{
+    width:38px;height:38px;flex-shrink:0;border-radius:8px;display:flex;align-items:center;justify-content:center;
+    font-size:17px;background:var(--panel-alt);border:1px solid var(--border);
+  }
+  .contact-card .cc-text{display:flex;flex-direction:column;gap:2px;overflow:hidden;}
+  .contact-card .cc-label{font-family:var(--font-mono);font-size:10px;color:var(--text-dim);letter-spacing:.04em;text-transform:uppercase;}
+  .contact-card .cc-value{font-family:var(--font-mono);font-size:12px;color:var(--text-bright);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .contact-card:hover .cc-value{color:var(--green);}
+  .cc-copy{
+    margin-left:auto;flex-shrink:0;background:none;border:1px solid var(--border);color:var(--text-dim);
+    font-family:var(--font-mono);font-size:10px;padding:5px 8px;border-radius:5px;cursor:pointer;
+    transition:border-color .2s, color .2s;
+  }
+  .cc-copy:hover{border-color:var(--green);color:var(--green);}
+  .cc-copy.copied{border-color:var(--green);color:var(--green);}
+
+  footer.foot{padding:40px 0;text-align:center;font-family:var(--font-mono);font-size:11.5px;color:var(--text-dim);}
+  footer.foot span{color:var(--green);}
+
+  .reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease, transform .6s ease;}
+  .reveal.in{opacity:1;transform:translateY(0);}
+
+  /* SKILL GLOBE */
+  .globe-panel{margin-top:18px;}
+  .skill-globe-wrap{
+    position:relative;height:640px;display:flex;align-items:center;justify-content:center;
+    overflow:hidden;cursor:grab;touch-action:none;
+  }
+  .skill-globe-wrap.dragging{cursor:grabbing;}
+  .globe-sphere{
+    position:absolute;top:50%;left:50%;border-radius:50%;pointer-events:none;
+    background-image:
+      radial-gradient(circle at 38% 32%, rgba(22,28,38,0.78) 0%, rgba(13,17,23,0.9) 55%, rgba(6,8,9,0.96) 100%),
+      url('globe-art.jpg');
+    background-size:cover, cover;
+    background-position:center, center 30%;
+    background-repeat:no-repeat, no-repeat;
+    box-shadow:0 0 0 1px rgba(255,159,28,0.35), 0 0 40px rgba(255,159,28,0.18), 0 0 90px rgba(255,159,28,0.08), inset 0 0 60px rgba(0,0,0,0.6);
+    transition:width .1s linear, height .1s linear;
+  }
+  .skill-globe-wrap svg{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;}
+  .skill-globe-wrap svg line{stroke:var(--amber);}
+  .globe-hint{
+    position:absolute;left:50%;bottom:22px;transform:translateX(-50%);
+    display:flex;align-items:center;gap:9px;padding:10px 20px;border-radius:999px;
+    background:rgba(13,17,23,0.7);border:1px solid var(--border-bright);backdrop-filter:blur(6px);
+    font-family:var(--font-mono);font-size:12px;color:var(--text-dim);white-space:nowrap;z-index:9999;
+  }
+  .globe-hint svg{position:static;width:15px;height:15px;stroke:var(--text-dim);fill:none;stroke-width:1.6;}
+  .skill-node{
+    position:absolute;top:50%;left:50%;display:flex;flex-direction:column;align-items:center;gap:6px;
+    pointer-events:none;will-change:transform;
+  }
+  .skill-node .node-icon{
+    width:52px;height:52px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .skill-node img{width:36px;height:36px;display:block;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.5));}
+  .skill-node .node-fallback{
+    width:36px;height:36px;border-radius:50%;border:1.5px solid;
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--font-mono);font-size:11px;font-weight:700;
+  }
+  .skill-node span{font-family:var(--font-mono);font-size:10px;color:var(--text-dim);white-space:nowrap;letter-spacing:.02em;}
+  @media (max-width:820px){.skill-globe-wrap{height:460px;}.skill-node .node-icon{width:40px;height:40px;}.skill-node img{width:28px;height:28px;}.skill-node .node-fallback{width:28px;height:28px;}}
+</style>
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+<div class="ai-glow"><span></span><span></span><span></span></div>
+<div class="grid-bg"></div>
+
+<nav>
+  <div class="wrap">
+    <div style="display:flex;align-items:center;">
+      <div class="traffic"><span class="r"></span><span class="y"></span><span class="g"></span></div>
+      <div class="nav-brand">naveen<span style="color:var(--text-dim)">@</span>portfolio<span style="color:var(--text-dim)">:~$</span></div>
+    </div>
+    <div class="nav-links">
+      <a href="#about">about</a>
+      <a href="#skills">skills</a>
+      <a href="#experience">experience</a>
+      <a href="#projects">projects</a>
+      <a href="#blog">blog</a>
+      <a href="#contact">contact</a>
+    </div>
+    <div class="connect-wrap">
+      <button class="nav-cta" id="connectBtn" aria-haspopup="true" aria-expanded="false">./connect</button>
+      <div class="connect-menu" id="connectMenu">
+        <a href="mailto:bonthunaveen1@gmail.com" class="connect-item">
+          <span class="ci-icon">📧</span><span class="ci-text">Email me</span>
+        </a>
+        <button type="button" class="connect-item" id="connectCopyEmail">
+          <span class="ci-icon">⧉</span><span class="ci-text">Copy email</span>
+        </button>
+        <a href="tel:+918919134956" class="connect-item">
+          <span class="ci-icon">📱</span><span class="ci-text">Call me</span>
+        </a>
+        <a href="https://www.linkedin.com/in/venkata-naveen-bonthu/" target="_blank" rel="noopener" class="connect-item">
+          <span class="ci-icon">💼</span><span class="ci-text">LinkedIn</span>
+        </a>
+        <a href="Bonthu_Naveen_Resume.pdf" target="_blank" rel="noopener" class="connect-item">
+          <span class="ci-icon">↓</span><span class="ci-text">Download resume</span>
+        </a>
+        <!-- Add a Calendly / booking link here if you set one up, e.g.:
+        <a href="https://calendly.com/your-link" target="_blank" rel="noopener" class="connect-item">
+          <span class="ci-icon">🗓</span><span class="ci-text">Book a call</span>
+        </a> -->
+        <a href="#contact" class="connect-item">
+          <span class="ci-icon">➜</span><span class="ci-text">View all contact info</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="status-line"><span class="status-dot"></span>SYSTEM.KERNEL :: AGENT_RUNTIME ONLINE</div>
+    <div class="hero-grid">
+      <div class="hero-left">
+        <h1>Hi, I'm Bonthu Venkata Naveen —<br><span class="hl">I build AI agents</span> that run enterprise operations.</h1>
+        <p class="hero-tag">AI &amp; Automation Engineer specializing in <span class="tag-hl">Agentic AI</span>, <span class="tag-hl">RAG pipelines</span>, and multi-agent orchestration — deployed on Azure OpenAI and Microsoft AutoGen, wired directly into ServiceNow, Teams, and Microsoft Graph.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#experience">./view_projects <span class="cursor"></span></a>
+          <a class="btn btn-ghost" href="Bonthu_Naveen_Resume.pdf" target="_blank" rel="noopener">↓ resume.pdf</a>
+          <a class="btn btn-ghost" href="https://github.com/NaveenBonthu" target="_blank" rel="noopener">GitHub</a>
+        </div>
+        <div class="modules">
+          <span>AZURE_OPENAI</span><span>GPT-4o</span><span>AUTOGEN</span><span>FASTAPI</span><span>PGVECTOR</span><span>LANGCHAIN</span><span>N8N</span>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <div class="term">
+          <div class="term-bar"><div class="traffic"><span class="r"></span><span class="y"></span><span class="g"></span></div><span class="term-title">agent.config.ts</span></div>
+          <div class="term-body">
+<div class="code-line"><span class="ln">1</span><span class="code"><span class="kw">import</span> { Engineer } <span class="kw">from</span> <span class="str">'./core'</span>;</span></div>
+<div class="code-line"><span class="ln">2</span><span class="code"></span></div>
+<div class="code-line"><span class="ln">3</span><span class="code"><span class="kw">const</span> <span class="fn">naveen</span> = <span class="kw">new</span> <span class="fn">Engineer</span>({</span></div>
+<div class="code-line"><span class="ln">4</span><span class="code">  <span class="prop">role</span>: <span class="str">'AI & Automation Engineer'</span>,</span></div>
+<div class="code-line"><span class="ln">5</span><span class="code">  <span class="prop">focus</span>: [<span class="str">'agentic-ai'</span>, <span class="str">'rag'</span>, <span class="str">'automation'</span>],</span></div>
+<div class="code-line"><span class="ln">6</span><span class="code">  <span class="prop">stack</span>: [<span class="str">'Azure OpenAI'</span>, <span class="str">'AutoGen'</span>, <span class="str">'FastAPI'</span>],</span></div>
+<div class="code-line"><span class="ln">7</span><span class="code">  <span class="prop">experience</span>: <span class="str">'3+ yrs'</span>,</span></div>
+<div class="code-line"><span class="ln">8</span><span class="code">  <span class="prop">status</span>: <span class="str">'open_to_work'</span>,</span></div>
+<div class="code-line"><span class="ln">9</span><span class="code">});</span></div>
+<div class="code-line"><span class="ln">10</span><span class="code"></span></div>
+<div class="code-line"><span class="ln">11</span><span class="code"><span class="com">// mttr reduced ~40% in production</span></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="about">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="pfx">$</span><h2>whoami</h2><span class="path">~/about</span></div>
+
+    <div class="about-grid reveal">
+      <div class="avatar-card">
+        <div class="avatar-box">
+          <div class="avatar-ring">
+            <img src="naveen-photo.jpg" alt="Bonthu Venkata Naveen">
+            <div class="avatar-status"></div>
+          </div>
+        </div>
+        <div class="avatar-meta">
+          <div><span>operator</span><b>B.V. Naveen</b></div>
+          <div><span>role</span><b>AI &amp; Automation Eng.</b></div>
+          <div><span>location</span><b>Bengaluru, IN</b></div>
+          <div><span>status</span><b class="online">● online</b></div>
+        </div>
+      </div>
+
+      <div class="term">
+        <div class="term-bar"><div class="traffic"><span class="r"></span><span class="y"></span><span class="g"></span></div><span class="term-title">user_profile.log</span></div>
+        <div class="term-body whoami-body">
+          <div class="whoami-block">
+            <p class="prompt">➜ <span class="cmd">whoami</span></p>
+            <p style="margin-top:8px;">I'm an AI &amp; Automation Engineer with 3+ years building Generative AI and Agentic AI systems that hold up in live enterprise environments, not just notebooks. My focus is multi-agent orchestration, RAG architectures, and LLM-powered assistants — built on Azure OpenAI and Microsoft AutoGen.</p>
+          </div>
+          <div class="whoami-block">
+            <p class="prompt">➜ <span class="cmd">cat mission.txt</span></p>
+            <p style="margin-top:8px;">Teaching models to read incident context, retrieve the right history, and act on it — wired into the systems teams already rely on: ServiceNow, Microsoft Graph, and Teams. Currently at Capgemini India, shipping agentic systems for enterprise operations.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="about-stats reveal">
+      <div class="stat-card"><div class="stat-icon" style="background:rgba(63,185,80,0.12);color:var(--green);">◆</div><div class="n">3+ YRS</div><div class="l">Experience</div></div>
+      <div class="stat-card"><div class="stat-icon" style="background:rgba(79,209,197,0.12);color:var(--cyan);">▣</div><div class="n">2</div><div class="l">Client Deployments</div></div>
+      <div class="stat-card"><div class="stat-icon" style="background:rgba(255,159,28,0.12);color:var(--amber);">◈</div><div class="n">3</div><div class="l">Personal Builds</div></div>
+      <div class="stat-card"><div class="stat-icon" style="background:rgba(124,131,253,0.12);color:var(--violet);">↓</div><div class="n">~40%</div><div class="l">MTTR Reduced</div></div>
+    </div>
+
+    <div class="intro-video-block reveal">
+      <div class="call-card" id="introVideoThumb">
+        <div class="call-status">Incoming intro</div>
+        <div class="call-avatar-wrap">
+          <div class="call-ring"></div>
+          <div class="call-ring delay"></div>
+          <img class="call-avatar" src="naveen-photo.jpg" alt="Bonthu Venkata Naveen">
+        </div>
+        <div class="call-name">Bonthu Venkata Naveen</div>
+        <div class="call-sub">30s intro · tap to answer</div>
+        <button class="call-answer-btn" type="button"><span class="call-answer-icon">📞</span> Answer</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="pfx">$</span><h2>cat skills.json</h2><span class="path">~/skills</span></div>
+    <div class="term skills-term reveal">
+      <div class="term-bar"><div class="traffic"><span class="r"></span><span class="y"></span><span class="g"></span></div><span class="term-title">skills.json</span></div>
+      <div class="term-body">
+        <div class="skill-row"><div class="skill-key">"generative_ai"</div><div class="skill-vals"><span>Azure OpenAI</span><span>GPT-4o</span><span>RAG</span><span>Prompt Engineering</span><span>Agentic AI</span><span>Microsoft AutoGen</span><span>Vector Embeddings</span></div></div>
+        <div class="skill-row"><div class="skill-key">"backend"</div><div class="skill-vals"><span>Python</span><span>FastAPI</span><span>REST APIs</span></div></div>
+        <div class="skill-row"><div class="skill-key">"automation"</div><div class="skill-vals"><span>PowerShell</span><span>Shell Scripting</span><span>n8n</span></div></div>
+        <div class="skill-row"><div class="skill-key">"cloud"</div><div class="skill-vals"><span>Azure OpenAI Service</span><span>Azure AI Services</span><span>Azure Functions</span><span>AWS (basic)</span></div></div>
+        <div class="skill-row"><div class="skill-key">"enterprise_integrations"</div><div class="skill-vals"><span>Microsoft Graph API</span><span>ServiceNow API</span></div></div>
+        <div class="skill-row"><div class="skill-key">"data_and_devops"</div><div class="skill-vals"><span>PostgreSQL (pgvector)</span><span>MySQL</span><span>SQL</span><span>Docker</span><span>Git / GitHub</span><span>Linux</span><span>Windows</span></div></div>
+      </div>
+    </div>
+
+    <div class="globe-panel reveal">
+      <div class="skill-globe-wrap" id="skillGlobe">
+        <div class="globe-sphere" id="globeSphere"></div>
+        <svg id="globeSvg"></svg>
+        <div class="globe-hint">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3c2.5 2.6 4 6 4 9s-1.5 6.4-4 9c-2.5-2.6-4-6-4-9s1.5-6.4 4-9z"></path></svg>
+          Drag to explore skills universe
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="pfx">$</span><h2>git log --stat --oneline</h2><span class="path">~/experience</span></div>
+
+    <div class="reveal">
+      <div class="commit">
+        <div class="commit-graph"><div class="commit-dot"></div><div class="commit-line"></div></div>
+        <div style="flex:1;">
+          <div class="commit-hash">a4f21c9 <span style="color:var(--text-dim)">HEAD -&gt; capgemini/main</span></div>
+          <div class="commit-meta">Dec 2022 — Present</div>
+          <div class="commit-title">AI-Powered Major Incident Management (MIM) Assistant</div>
+          <div class="commit-org">AI &amp; Automation Developer @ Capgemini India · Client: Enterprise Operations</div>
+          <div class="commit-desc">Architected a 3-agent AutoGen system — Incident Analysis, Meeting, and Transcript Analysis agents — automating major-incident triage, RCA generation, and stakeholder communication. Built a RAG pipeline over Azure OpenAI embeddings and pgvector to ground responses in historical incidents and runbooks.</div>
+          <div class="commit-tags"><span>Python</span><span>FastAPI</span><span>GPT-4o</span><span>AutoGen</span><span>pgvector</span><span>Graph API</span><span>ServiceNow</span></div>
+          <div class="commit-stats"><span class="plus">+ 40% MTTR reduced</span><span class="plus">+ 30 incidents/mo automated</span><span class="minus">− 15 manual hrs/week</span></div>
+        </div>
+      </div>
+
+      <div class="commit">
+        <div class="commit-graph"><div class="commit-dot"></div><div class="commit-line"></div></div>
+        <div style="flex:1;">
+          <div class="commit-hash">7e19b3d <span style="color:var(--text-dim)">capgemini/main</span></div>
+          <div class="commit-meta">Dec 2022 — Present</div>
+          <div class="commit-title">Enterprise Infrastructure Automation Platform (ADC Bot Factory)</div>
+          <div class="commit-org">AI &amp; Automation Developer @ Capgemini India · Client: Bayer</div>
+          <div class="commit-desc">Built the Auto Heal Framework, a self-healing engine detecting and remediating infrastructure issues across Linux and Windows without on-call intervention. Automated pre- and post-patch validation across hundreds of servers, exposed via FastAPI.</div>
+          <div class="commit-tags"><span>Python</span><span>PowerShell</span><span>FastAPI</span><span>Linux</span><span>Windows</span></div>
+          <div class="commit-stats"><span class="plus">+ 50% manual effort cut</span><span class="minus">− 10 manual hrs/week</span></div>
+        </div>
+      </div>
+
+      <div class="commit">
+        <div class="commit-graph"><div class="commit-dot" style="background:var(--text-dim);box-shadow:none;"></div></div>
+        <div style="flex:1;">
+          <div class="commit-hash">1a2b3c0</div>
+          <div class="commit-meta">Dec 2022</div>
+          <div class="commit-title" style="font-size:14px;color:var(--text-dim);">Initial commit — joined Capgemini India as AI &amp; Automation Developer</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="pfx">$</span><h2>ls -la ~/experiments</h2><span class="path">personal projects</span></div>
+
+    <div class="repo-list reveal">
+
+      <div class="repo-card">
+        <div class="repo-head"><span class="repo-name">◆ lead-scoring-agents</span><span class="repo-badge">Personal</span></div>
+        <p class="repo-desc">Manual lead qualification was slow and inconsistent — leads sat unscored for hours. A three-agent pipeline takes a submission from raw form data to a scored, emailed response with no human in the loop.</p>
+        <ol class="repo-flow-list">
+          <li>Extracts and structures raw lead data from each form submission</li>
+          <li>Scores the lead Hot / Warm / Cold and routes it to Priority, Follow-up, or General</li>
+          <li>Generates a personalized sales email matched to that lead's context</li>
+        </ol>
+        <div class="repo-foot">
+          <div class="repo-lang"><span><span class="lang-dot" style="background:var(--amber);"></span>Automation</span><span>form → score → email, in seconds</span></div>
+          <div class="repo-stack"><span>Google Forms</span><span>Gemini AI</span><span>Gmail</span><span>Sheets</span><span>Zapier</span></div>
+        </div>
+      </div>
+
+      <div class="repo-card">
+        <div class="repo-head"><span class="repo-name">◆ linkedin-auto-publisher</span><span class="repo-badge">Personal</span></div>
+        <p class="repo-desc">Keeping a technical LinkedIn presence active meant researching and writing AI updates by hand daily. A scheduled agent chain now researches, drafts, edits, and publishes the post on its own.</p>
+        <ol class="repo-flow-list">
+          <li>Fetches the latest AI engineering updates using live web search</li>
+          <li>Extracts key trends and drafts concise post content</li>
+          <li>A "Post-Polisher" agent refines, validates, and improves readability</li>
+          <li>Publishes automatically to LinkedIn on a daily schedule</li>
+        </ol>
+        <div class="repo-foot">
+          <div class="repo-lang"><span><span class="lang-dot" style="background:var(--cyan);"></span>Agentic Workflow</span><span>runs unattended, daily</span></div>
+          <div class="repo-stack"><span>LangChain</span><span>LangSmith</span><span>Tavily</span><span>LinkedIn API</span><span>Scheduler</span></div>
+        </div>
+      </div>
+
+      <div class="repo-card">
+        <div class="repo-head"><span class="repo-name">◆ job-alert-automation</span><span class="repo-badge">Personal</span></div>
+        <p class="repo-desc">Job-alert emails pile up fast and the relevant signal gets buried. A pipeline reads every alert, pulls out what matters, and scores it against my own profile — so only the roles worth applying to surface.</p>
+        <ol class="repo-flow-list">
+          <li>Reads job-alert emails from Gmail and extracts role, company, and skills with AI</li>
+          <li>Sends structured data to a FastAPI service for processing</li>
+          <li>Scores relevance against my profile and logs results to Google Sheets</li>
+        </ol>
+        <div class="repo-foot">
+          <div class="repo-lang"><span><span class="lang-dot" style="background:var(--violet);"></span>Pipeline</span><span>zero manual tracking</span></div>
+          <div class="repo-stack"><span>n8n</span><span>Gemini</span><span>FastAPI</span><span>Python</span><span>Gmail API</span><span>Sheets</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="blog">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="pfx">$</span><h2>cat ~/blog/*.md</h2><span class="path">writeups</span></div>
+
+    <div class="repo-list reveal">
+
+      <article class="repo-card blog-card">
+        <div class="repo-head"><span class="repo-name">◆ How I Cut MTTR by 40% with a 3-Agent AutoGen System</span><span class="repo-badge">Blog</span></div>
+        <div class="blog-meta"><span>Engineering</span><span>Agentic AI</span></div>
+        <p class="repo-desc">Major incidents used to mean the same thing every time: a war-room bridge, a scramble to page the right people, and hours of manual RCA writing after the fact. Here's how a 3-agent system changed that.</p>
+        <button class="blog-toggle" data-target="blog-1">Read more <span>→</span></button>
+        <div class="blog-body" id="blog-1">
+          <p>The core problem wasn't a lack of process — it was that every major incident consumed the same manual steps: classify severity, spin up a Teams bridge, notify the right stakeholders, and, after resolution, write up a root cause analysis nobody had time to do properly.</p>
+          <p>I architected a 3-agent system using Microsoft AutoGen to split that work into specialists: an <strong>Incident Analysis Agent</strong> that classifies severity and drafts the RCA, a <strong>Meeting Agent</strong> that creates the Teams bridge and notifies stakeholders via Microsoft Graph API, and a <strong>Transcript Analysis Agent</strong> that extracts action items once the call ends. AutoGen coordinates the handoffs between them.</p>
+          <p>Underneath, Azure OpenAI's GPT-4o handles the real-time analysis and RCA drafting, exposed through async FastAPI endpoints so multiple incidents can be processed concurrently. The result: MTTR down ~40% across 30+ major incidents a month, and roughly 15 engineer-hours a week no longer spent on manual triage and documentation.</p>
+        </div>
+      </article>
+
+      <article class="repo-card blog-card">
+        <div class="repo-head"><span class="repo-name">◆ RAG in Production: What Actually Reduces Hallucinations</span><span class="repo-badge">Blog</span></div>
+        <div class="blog-meta"><span>RAG</span><span>Applied AI</span></div>
+        <p class="repo-desc">An LLM confidently inventing a root cause is worse than no answer at all. What actually made retrieval reliable in a live incident-response pipeline.</p>
+        <button class="blog-toggle" data-target="blog-2">Read more <span>→</span></button>
+        <div class="blog-body" id="blog-2">
+          <p>When I connected GPT-4o to incident RCA generation, the first version leaned entirely on the model's own reasoning — and it occasionally produced plausible-sounding but incorrect root causes. The fix wasn't a bigger model, it was better grounding.</p>
+          <p>I built a RAG pipeline using Azure OpenAI embeddings with PostgreSQL's pgvector extension, indexing historical incidents and existing runbooks. Before generating a response, the system retrieves the most relevant past incidents and known fixes, and the model is instructed to reason from that retrieved context rather than from memory alone.</p>
+          <p>The practical takeaway: retrieval quality mattered more than prompt cleverness. Getting the right historical incidents into context — not just semantically similar ones — is what actually cut down on hallucinated resolutions and made the output something engineers could trust during a live incident.</p>
+        </div>
+      </article>
+
+      <article class="repo-card blog-card">
+        <div class="repo-head"><span class="repo-name">◆ Building a Self-Healing Infra Framework (Auto Heal)</span><span class="repo-badge">Blog</span></div>
+        <div class="blog-meta"><span>Automation</span><span>Infra</span></div>
+        <p class="repo-desc">Patch validation across hundreds of Linux and Windows servers was eating 10+ hours a week in manual checks. Auto Heal was built to catch and fix the common failures before anyone had to.</p>
+        <button class="blog-toggle" data-target="blog-3">Read more <span>→</span></button>
+        <div class="blog-body" id="blog-3">
+          <p>Working with Bayer's server estate, patch validation followed a predictable pattern: run pre-checks, apply the patch, run post-checks, and manually fix whatever broke. Most of the breakages were the same handful of failure patterns, repeated across hundreds of machines.</p>
+          <p>Auto Heal is a self-healing engine, built in Python and PowerShell, that automatically detects and remediates those common infrastructure issues across both Linux and Windows — before they need a human on-call response. It handles health monitoring, compliance validation, and patch verification end-to-end, and exposes its automation through FastAPI so it plugs into broader enterprise tooling.</p>
+          <p>Net result: manual patch-validation effort dropped by 50%, saving over 10 engineer-hours a week that used to go into repetitive checks instead of actual problem-solving.</p>
+        </div>
+      </article>
+
+      <article class="repo-card blog-card">
+        <div class="repo-head"><span class="repo-name">◆ Why I Build Personal AI Agents on the Side</span><span class="repo-badge">Blog</span></div>
+        <div class="blog-meta"><span>Personal</span><span>Agentic AI</span></div>
+        <p class="repo-desc">Client work teaches you to build within constraints. Personal projects teach you what you'd build without them — that's why I keep a few running unattended, end to end.</p>
+        <button class="blog-toggle" data-target="blog-4">Read more <span>→</span></button>
+        <div class="blog-body" id="blog-4">
+          <p>My day-to-day work is enterprise incident automation — scoped, reviewed, and shipped within a client's constraints. My personal projects are the opposite: small, fast, and built purely to test an idea end-to-end without anyone signing off on the architecture first.</p>
+          <p>That's produced three unattended pipelines so far: a lead-scoring agent chain that takes a form submission straight to a scored, personalized email with no human step; an autonomous LinkedIn publisher that researches, drafts, edits, and posts technical content on a schedule; and a job-alert pipeline that reads Gmail alerts, scores them against my own profile, and logs only what's actually relevant to Sheets.</p>
+          <p>None of them are complicated individually — the value is in each one running completely on its own, trigger to output. That's the muscle I'm building: not just using AI agents, but trusting them to run without me in the loop.</p>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="pfx">$</span><h2>cat education.yml && cat certs.log</h2><span class="path">~/credentials</span></div>
+    <div class="two-col reveal">
+      <div class="term file-term">
+        <div class="term-bar"><div class="traffic"><span class="r"></span><span class="y"></span><span class="g"></span></div><span class="term-title">education.yml</span></div>
+        <div class="term-body">
+          <div class="kv"><span class="k">degree:</span><span class="v">B.Tech, Computer Science Engineering</span></div>
+          <div class="kv"><span class="k">school:</span><span class="v">Bonam Venkata Chala Mayya Engineering College</span></div>
+          <div class="kv"><span class="k">duration:</span><span class="v">Aug 2018 — May 2022</span></div>
+          <div class="kv"><span class="k">cgpa:</span><span class="v">8.3 / 10</span></div>
+        </div>
+      </div>
+      <div class="term file-term">
+        <div class="term-bar"><div class="traffic"><span class="r"></span><span class="y"></span><span class="g"></span></div><span class="term-title">certs.log</span></div>
+        <div class="term-body">
+          <div class="cert-line">Microsoft Certified: Azure AI Fundamentals (AI-900)</div>
+          <div class="cert-line">Microsoft Certified: Azure Fundamentals (AZ-900)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" style="border-bottom:none;">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="pfx">$</span><h2>./contact.exe</h2><span class="path">~/contact</span></div>
+    <div class="contact-grid reveal">
+      <div class="term">
+        <div class="term-bar"><div class="traffic"><span class="r"></span><span class="y"></span><span class="g"></span></div><span class="term-title">contact.json</span></div>
+        <div class="term-body" style="font-family:var(--font-mono);font-size:12.5px;">
+<div class="code-line"><span class="ln">1</span><span class="code">{</span></div>
+<div class="code-line"><span class="ln">2</span><span class="code">  <span class="prop">"status"</span>: <span class="str">"open_to_work"</span>,</span></div>
+<div class="code-line"><span class="ln">3</span><span class="code">  <span class="prop">"email"</span>: <span class="str">"bonthunaveen1@gmail.com"</span>,</span></div>
+<div class="code-line"><span class="ln">4</span><span class="code">  <span class="prop">"phone"</span>: <span class="str">"+91 89191 34956"</span>,</span></div>
+<div class="code-line"><span class="ln">5</span><span class="code">  <span class="prop">"location"</span>: <span class="str">"Bengaluru, India"</span></span></div>
+<div class="code-line"><span class="ln">6</span><span class="code">}</span></div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;justify-content:center;">
+        <div class="contact-cards">
+          <a class="contact-card" href="mailto:bonthunaveen1@gmail.com">
+            <div class="cc-icon">📧</div>
+            <div class="cc-text"><span class="cc-label">Gmail</span><span class="cc-value">bonthunaveen1@gmail.com</span></div>
+            <button class="cc-copy" type="button" data-copy="bonthunaveen1@gmail.com" onclick="event.preventDefault();copyContact(this)">copy</button>
+          </a>
+          <a class="contact-card" href="tel:+918919134956">
+            <div class="cc-icon">📱</div>
+            <div class="cc-text"><span class="cc-label">Mobile</span><span class="cc-value">+91 89191 34956</span></div>
+            <button class="cc-copy" type="button" data-copy="+918919134956" onclick="event.preventDefault();copyContact(this)">copy</button>
+          </a>
+          <a class="contact-card" href="https://www.linkedin.com/in/venkata-naveen-bonthu/" target="_blank" rel="noopener">
+            <div class="cc-icon">💼</div>
+            <div class="cc-text"><span class="cc-label">LinkedIn</span><span class="cc-value">/in/venkata-naveen-bonthu</span></div>
+          </a>
+          <a class="contact-card" href="https://github.com/NaveenBonthu" target="_blank" rel="noopener">
+            <div class="cc-icon">🐙</div>
+            <div class="cc-text"><span class="cc-label">GitHub</span><span class="cc-value">NaveenBonthu</span></div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  Designed <span>&amp;</span> built by Naveen · © 2026
+</footer>
+
+<span class="chat-fab-label" id="chatFabLabel"><span id="lblHi">Hi 👋&nbsp;</span><span id="lblTyped"></span><span class="lbl-cursor" id="lblCursor"></span></span>
+<button class="chat-fab" id="chatFab" aria-label="Ask about Naveen">
+  <svg viewBox="0 0 24 24" width="26" height="26" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="7" y="2.5" width="10" height="2" rx="1" fill="#04140a"/>
+    <circle cx="12" cy="1.6" r="1.3" fill="#04140a"/>
+    <rect x="5" y="6.5" width="14" height="11" rx="3" fill="#04140a"/>
+    <rect id="fabEyeL" class="cb-eye l" x="7.6" y="10.4" width="3.4" height="2.3" rx="1.1" fill="var(--green)"/>
+    <rect id="fabEyeR" class="cb-eye r" x="13" y="10.4" width="3.4" height="2.3" rx="1.1" fill="var(--green)"/>
+    <rect x="8.4" y="14.6" width="7.2" height="1.4" rx="0.7" fill="var(--green)"/>
+    <rect x="1.6" y="10.5" width="2.2" height="4.5" rx="1.1" fill="#04140a"/>
+    <rect x="20.2" y="10.5" width="2.2" height="4.5" rx="1.1" fill="#04140a"/>
+  </svg>
+  <span class="dot"></span>
+</button>
+
+<div class="bot-leaderboard" id="botLeaderboard">Fights today: <b id="botFightCount">0</b></div>
+<button class="bot-settings-btn" id="botSettingsBtn" aria-label="Robot chaos settings" title="Robot settings">⚙️</button>
+<div class="bot-settings-panel" id="botSettingsPanel">
+  <label>Fight frequency
+    <input type="range" id="botFightFreq" min="1" max="3" value="2" step="1">
+  </label>
+  <label>Robot count (<span id="botCountLabel">5</span>)
+    <input type="range" id="botCount" min="2" max="8" value="5" step="1">
+  </label>
+</div>
+
+<div class="video-modal" id="videoModal">
+  <div class="video-modal-inner">
+    <button class="video-modal-close" id="videoModalClose" aria-label="Close video">✕</button>
+    <video id="introVideoPlayer" controls playsinline poster="naveen-photo.jpg">
+      <source src="naveen-intro.mp4" type="video/mp4">
+      Your browser doesn't support embedded video.
+    </video>
+  </div>
+</div>
+
+<div class="chat-panel" id="chatPanel">
+  <div class="chat-head"><img src="naveen-photo.jpg" alt="Naveen" class="chat-avatar"><span class="status-dot"></span> i am naveen's.bot</div>
+  <div class="chat-body" id="chatBody">
+    <div class="chat-msg bot">Hi 👋 I'm Naveen — how can I help you? Pick a question below or come back anytime.</div>
+  </div>
+  <div class="chat-suggestions" id="chatSuggestions"></div>
+</div>
+
+<div class="cursor-bot" id="cursorBot" aria-hidden="true">
+  <svg viewBox="0 0 24 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="7" y="2.5" width="10" height="2" rx="1" fill="var(--green)"/>
+    <circle cx="12" cy="1.6" r="1.2" fill="var(--cyan)"/>
+    <rect x="5" y="6.5" width="14" height="11" rx="3" fill="#0D1117" stroke="var(--green)" stroke-width="1"/>
+    <rect class="cb-eye" x="7.6" y="10.4" width="3.4" height="2.3" rx="1.1" fill="var(--cyan)"/>
+    <rect class="cb-eye" x="13" y="10.4" width="3.4" height="2.3" rx="1.1" fill="var(--cyan)"/>
+    <rect x="8.4" y="14.6" width="7.2" height="1.4" rx="0.7" fill="var(--green)"/>
+    <rect x="1.6" y="10.5" width="2.2" height="4.5" rx="1.1" fill="var(--green)"/>
+    <rect x="20.2" y="10.5" width="2.2" height="4.5" rx="1.1" fill="var(--green)"/>
+    <rect class="cb-leg cb-leg-l" x="7.6" y="17.5" width="2.4" height="7.5" rx="1" fill="var(--green)"/>
+    <rect class="cb-leg cb-leg-r" x="14" y="17.5" width="2.4" height="7.5" rx="1" fill="var(--green)"/>
+  </svg>
+</div>
+
+<script>
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e,i) => {
+      if(e.isIntersecting){
+        setTimeout(() => e.target.classList.add('in'), reduceMotion ? 0 : i*40);
+        io.unobserve(e.target);
+      }
+    });
+  }, {threshold:0.12});
+  revealEls.forEach(el => io.observe(el));
+
+  // ---- scroll progress bar ----
+  const progressBar = document.getElementById('scrollProgress');
+  function updateProgress(){
+    const h = document.documentElement;
+    const scrolled = h.scrollTop;
+    const max = h.scrollHeight - h.clientHeight;
+    const pct = max > 0 ? (scrolled / max) * 100 : 0;
+    if(progressBar) progressBar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', updateProgress, {passive:true});
+  updateProgress();
+
+  // ---- nav active-section highlight ----
+  const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+  const navSections = Array.from(navLinks).map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  function updateActiveNav(){
+    let current = navSections[0];
+    const offset = 90;
+    navSections.forEach(sec => {
+      if(sec.getBoundingClientRect().top - offset <= 0) current = sec;
+    });
+    navLinks.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current.id);
+    });
+  }
+  window.addEventListener('scroll', updateActiveNav, {passive:true});
+  updateActiveNav();
+
+  // ---- blog read more toggle ----
+  document.querySelectorAll('.blog-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const body = document.getElementById(btn.dataset.target);
+      if(!body) return;
+      const isOpen = body.classList.toggle('open');
+      btn.querySelector('span').textContent = isOpen ? '↑' : '→';
+      btn.firstChild.textContent = isOpen ? 'Show less ' : 'Read more ';
+    });
+  });
+
+  // ---- chatbot widget ----
+  const chatFaq = [
+    { q: "What do you do?", a: "I'm an AI & Automation Engineer with 3+ years building production-grade Generative AI and Agentic AI systems — specializing in Azure OpenAI (GPT-4o), Microsoft AutoGen, and RAG architectures." },
+    { q: "What's your experience with RAG?", a: "I built a RAG pipeline using Azure OpenAI embeddings with PostgreSQL (pgvector) to retrieve historical incidents and runbooks in a live enterprise system — improving response accuracy and reducing hallucinations." },
+    { q: "What's the AutoGen project about?", a: "A 3-agent system (Incident Analysis, Meeting, and Transcript Analysis agents) I built that automates major incident triage, RCA generation, and stakeholder communication — cutting MTTR by ~40% across 30+ incidents/month." },
+    { q: "What's your tech stack?", a: "Azure OpenAI, GPT-4o, Microsoft AutoGen, RAG/pgvector, Python, FastAPI, PowerShell, n8n, Docker, and enterprise integrations like ServiceNow & Microsoft Graph API." },
+    { q: "How can I contact you?", a: "Email me at bonthunaveen1@gmail.com · I'm based in Bengaluru, India · You'll find my LinkedIn and GitHub in the Contact section below." }
+  ];
+  const chatFab = document.getElementById('chatFab');
+  const chatPanel = document.getElementById('chatPanel');
+  const chatBody = document.getElementById('chatBody');
+  const chatSuggestions = document.getElementById('chatSuggestions');
+
+  function renderSuggestions(){
+    chatSuggestions.innerHTML = '';
+    chatFaq.forEach(item => {
+      const b = document.createElement('button');
+      b.textContent = item.q;
+      b.addEventListener('click', () => askQuestion(item));
+      chatSuggestions.appendChild(b);
+    });
+  }
+  function askQuestion(item){
+    const userMsg = document.createElement('div');
+    userMsg.className = 'chat-msg user';
+    userMsg.textContent = item.q;
+    chatBody.appendChild(userMsg);
+    setTimeout(() => {
+      const botMsg = document.createElement('div');
+      botMsg.className = 'chat-msg bot';
+      botMsg.textContent = item.a;
+      chatBody.appendChild(botMsg);
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }, 350);
+    chatBody.scrollTop = chatBody.scrollHeight;
+  }
+  const chatFabLabel = document.getElementById('chatFabLabel');
+
+  // ---- slow-typed label: "Hi 👋" appears instantly, rest types out ----
+  (function(){
+    const target = "I am naveen's bot";
+    const typedEl = document.getElementById('lblTyped');
+    const cursorEl = document.getElementById('lblCursor');
+    if(!typedEl) return;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(reduceMotion){ typedEl.textContent = target; cursorEl?.classList.add('done'); return; }
+    let i = 0;
+    const speed = 60; // medium pace, ms per letter
+    function typeNext(){
+      if(i < target.length){
+        typedEl.textContent += target[i];
+        i++;
+        setTimeout(typeNext, speed);
+      } else {
+        setTimeout(() => cursorEl?.classList.add('done'), 900);
+      }
+    }
+    setTimeout(typeNext, 350);
+  })();
+
+  // ---- fab robot: eyes track cursor + periodic small jump ----
+  (function(){
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(reduceMotion || !chatFab) return;
+    const eyeL = document.getElementById('fabEyeL');
+    const eyeR = document.getElementById('fabEyeR');
+    const MAX_SHIFT = 0.9;
+
+    window.addEventListener('mousemove', (e) => {
+      const rect = chatFab.getBoundingClientRect();
+      const cx = rect.left + rect.width/2, cy = rect.top + rect.height/2;
+      const dx = e.clientX - cx, dy = e.clientY - cy;
+      const dist = Math.hypot(dx, dy) || 1;
+      const shiftX = (dx/dist) * MAX_SHIFT;
+      const shiftY = (dy/dist) * MAX_SHIFT;
+      const t = `translate(${shiftX.toFixed(2)}px, ${shiftY.toFixed(2)}px)`;
+      if(eyeL) eyeL.style.transform = t;
+      if(eyeR) eyeR.style.transform = t;
+    }, { passive:true });
+
+    function scheduleJump(){
+      const delay = 4000 + Math.random()*3000;
+      setTimeout(() => {
+        if(!chatPanel.classList.contains('open')){
+          chatFab.classList.add('jump');
+          setTimeout(() => chatFab.classList.remove('jump'), 520);
+        }
+        scheduleJump();
+      }, delay);
+    }
+    scheduleJump();
+  })();
+  chatFab?.addEventListener('click', () => {
+    chatPanel.classList.toggle('open');
+    chatFabLabel?.classList.add('hide');
+  });
+  renderSuggestions();
+
+  // ---- copy-to-clipboard for contact cards ----
+  window.copyContact = function(btn){
+    const val = btn.getAttribute('data-copy');
+    navigator.clipboard?.writeText(val).then(() => {
+      const original = btn.textContent;
+      btn.textContent = 'copied';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = original; btn.classList.remove('copied'); }, 1500);
+    });
+  };
+
+  // ---- cursor-following robot companion ----
+  (function(){
+    const bot = document.getElementById('cursorBot');
+    if(!bot) return;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isTouch = window.matchMedia('(hover: none), (pointer: coarse)').matches;
+    if(reduceMotion || isTouch) return;
+
+    let mouseX = window.innerWidth/2, mouseY = window.innerHeight/2;
+    let botX = mouseX, botY = mouseY;
+    let prevX = botX, prevY = botY;
+    let started = false;
+
+    window.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX; mouseY = e.clientY;
+      if(!started){ started = true; botX = mouseX; botY = mouseY; bot.classList.add('active'); }
+    }, { passive:true });
+
+    document.addEventListener('mouseleave', () => bot.classList.remove('active'));
+    document.addEventListener('mouseenter', () => { if(started) bot.classList.add('active'); });
+
+    function frame(){
+      // ease toward the cursor with a trailing offset
+      botX += (mouseX - 24 - botX) * 0.14;
+      botY += (mouseY - 24 - botY) * 0.14;
+
+      const dx = botX - prevX, dy = botY - prevY;
+      const speed = Math.min(Math.hypot(dx, dy), 18);
+      const tilt = Math.max(-18, Math.min(18, dx * 1.4));
+      const bob = Math.sin(Date.now() / 260) * (speed > 0.4 ? 1 : 3);
+      bot.classList.toggle('idle-legs', speed < 0.3);
+
+      bot.style.transform = `translate(${botX}px, ${botY + bob}px) rotate(${tilt}deg)`;
+      prevX = botX; prevY = botY;
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  })();
+
+  // ---- shared bot toolkit: svg builder, leaderboard, speech lines, codenames ----
+  window.BotFX = (function(){
+    const TEAM_COLORS = { A: ['#3FB950', '#4FD1C5'], B: ['#FF9F1C', '#F85149', '#BC8CFF'] };
+
+    function botSVG(color){
+      return `<svg viewBox="0 0 24 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="7" y="2.5" width="10" height="2" rx="1" fill="${color}"/>
+        <circle cx="12" cy="1.6" r="1.2" fill="${color}"/>
+        <rect x="5" y="6.5" width="14" height="11" rx="3" fill="#0D1117" stroke="${color}" stroke-width="1"/>
+        <rect class="cb-eye" x="7.6" y="10.4" width="3.4" height="2.3" rx="1.1" fill="${color}"/>
+        <rect class="cb-eye" x="13" y="10.4" width="3.4" height="2.3" rx="1.1" fill="${color}"/>
+        <rect x="8.4" y="14.6" width="7.2" height="1.4" rx="0.7" fill="${color}"/>
+        <rect class="cb-arm cb-arm-l" x="2.8" y="8.5" width="2.2" height="6.5" rx="1.1" fill="${color}"/>
+        <rect class="cb-arm cb-arm-r" x="19" y="8.5" width="2.2" height="6.5" rx="1.1" fill="${color}"/>
+        <rect class="cb-leg cb-leg-l" x="7.6" y="17.5" width="2.4" height="7.5" rx="1" fill="${color}"/>
+        <rect class="cb-leg cb-leg-r" x="14" y="17.5" width="2.4" height="7.5" rx="1" fill="${color}"/>
+      </svg>`;
+    }
+
+    function randRange(min, max){ return min + Math.random() * (max - min); }
+    function clamp(v, min, max){ return Math.max(min, Math.min(max, v)); }
+    function nightMode(){ const h = new Date().getHours(); return h >= 19 || h < 6; }
+
+    // daily fight leaderboard
+    function todayKey(){ return 'bot-fights-' + new Date().toISOString().slice(0, 10); }
+    function getFightCount(){ try{ return parseInt(localStorage.getItem(todayKey()) || '0', 10); }catch(e){ return 0; } }
+    function incrementFightCount(){
+      const n = getFightCount() + 1;
+      try{ localStorage.setItem(todayKey(), String(n)); }catch(e){}
+      const el = document.getElementById('botFightCount');
+      if(el) el.textContent = n;
+      return n;
+    }
+
+    const SPEECH_LINES = ['Compiling...', '404: nap not found', 'sudo make me a sandwich', 'Beep boop.', 'Running diagnostics', 'Low battery, brb', 'Deploying to prod, pray', 'git commit -m "fight"', 'Patching kernel...', 'rm -rf doubts'];
+    const CODENAMES = ['UNIT-7X', 'BOLT-9', 'RUST-3', 'ZAP-Q1', 'NULL-42', 'PING-8', 'CRON-5', 'BYTE-VX'];
+
+    function seasonalAccessory(){
+      const d = new Date();
+      const m = d.getMonth(), day = d.getDate(); // month 0-11
+      if(m === 11) return '🎅'; // December: santa hat
+      if(m === 9 && day >= 24) return '🦇'; // late Oct: halloween bat
+      return null;
+    }
+
+    return { botSVG, randRange, clamp, nightMode, TEAM_COLORS, incrementFightCount, getFightCount, SPEECH_LINES, CODENAMES, seasonalAccessory };
+  })();
+
+  // ---- leaderboard display + night mode wiring ----
+  (function(){
+    const countEl = document.getElementById('botFightCount');
+    if(countEl) countEl.textContent = BotFX.getFightCount();
+    if(BotFX.nightMode()) document.body.classList.add('bot-night-mode');
+  })();
+
+  // ---- ambient wandering robots: roam the whole page, team-based kung-fu duels, and more ----
+  (function(){
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isTouch = window.matchMedia('(hover: none), (pointer: coarse)').matches;
+    if(reduceMotion || isTouch) return;
+    const { botSVG, randRange, clamp, TEAM_COLORS, incrementFightCount, SPEECH_LINES, CODENAMES, seasonalAccessory } = BotFX;
+
+    const SECTION_SELECTORS = '.skill-row, .repo-card, .stat-card';
+    const COSTUMES = ['😎', '🎩', '🧣'];
+    const RPS = ['✊', '✋', '✌️'];
+    let fightSpeedMultiplier = 1;
+
+    const usedCodenames = new Set();
+    function nextCodename(){
+      const pool = CODENAMES.filter(c => !usedCodenames.has(c));
+      const list = pool.length ? pool : CODENAMES;
+      const name = list[Math.floor(Math.random() * list.length)];
+      usedCodenames.add(name);
+      return name;
+    }
+
+    let mouseDocX = null, mouseDocY = null;
+    document.addEventListener('mousemove', (e) => { mouseDocX = e.pageX; mouseDocY = e.pageY; }, { passive: true });
+
+    function docBounds(){
+      return { w: document.documentElement.scrollWidth, h: document.documentElement.scrollHeight };
+    }
+
+    // weather-reactive behavior (best-effort; silently no-ops if geolocation/fetch unavailable)
+    const weather = { rain: false, hot: false };
+    function applyWeatherVisuals(){
+      bots.forEach(b => {
+        let umbrella = b.el.querySelector('.amb-umbrella');
+        if(weather.rain && !umbrella){
+          umbrella = document.createElement('div');
+          umbrella.className = 'amb-umbrella';
+          umbrella.textContent = '☂️';
+          b.el.appendChild(umbrella);
+        } else if(!weather.rain && umbrella){
+          umbrella.remove();
+        }
+      });
+    }
+    function fetchWeather(){
+      if(!navigator.geolocation) return;
+      navigator.geolocation.getCurrentPosition(pos => {
+        const { latitude, longitude } = pos.coords;
+        fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`)
+          .then(r => r.json())
+          .then(data => {
+            const cw = data && data.current_weather;
+            if(!cw) return;
+            const code = cw.weathercode;
+            weather.rain = (code >= 51 && code <= 82) || code >= 95;
+            weather.hot = cw.temperature >= 38;
+            applyWeatherVisuals();
+          })
+          .catch(() => {});
+      }, () => {}, { timeout: 4000 });
+    }
+
+    // GitHub stats cameo (fetched once, best-effort)
+    let githubLine = null;
+    fetch('https://api.github.com/users/NaveenBonthu')
+      .then(r => r.ok ? r.json() : null)
+      .then(data => { if(data) githubLine = `⭐ ${data.followers} followers · ${data.public_repos} repos`; })
+      .catch(() => {});
+
+    const bots = [];
+
+    function setFacing(bot, left){
+      bot.facingLeft = left;
+      bot.face.classList.toggle('flip', left);
+    }
+
+    function moveBotTo(bot, x, y, duration){
+      const bounds = docBounds();
+      x = clamp(x, 20, Math.max(60, bounds.w - 40));
+      y = clamp(y, 80, Math.max(200, bounds.h - 80));
+      const dx = x - bot.x;
+      bot.el.style.transitionDuration = duration + 'ms, ' + duration + 'ms';
+      bot.el.classList.add('walking');
+      if(Math.abs(dx) > 4) setFacing(bot, dx < 0);
+      bot.el.style.left = x + 'px';
+      bot.el.style.top = y + 'px';
+      bot.x = x; bot.y = y;
+      setTimeout(() => { if(!bot.fighting) bot.el.classList.remove('walking'); }, duration);
+    }
+
+    function checkSectionHover(bot){
+      const boxL = bot.x - 5, boxT = bot.y - 5, boxR = bot.x + 29, boxB = bot.y + 35;
+      let hit = false;
+      document.querySelectorAll(SECTION_SELECTORS).forEach(sec => {
+        if(hit) return;
+        const r = sec.getBoundingClientRect();
+        const docLeft = r.left + window.scrollX, docTop = r.top + window.scrollY;
+        const docRight = docLeft + r.width, docBottom = docTop + r.height;
+        if(boxL < docRight && boxR > docLeft && boxT < docBottom && boxB > docTop) hit = true;
+      });
+      bot.inspecting = hit;
+      bot.inspect.classList.toggle('show', hit);
+    }
+
+    function maybeSpeak(bot){
+      const roll = Math.random();
+      let line = null, isSign = false;
+      if(githubLine && roll < 0.12){ line = githubLine; isSign = true; }
+      else if(roll < 0.4){ line = SPEECH_LINES[Math.floor(Math.random() * SPEECH_LINES.length)]; }
+      if(line){
+        bot.speech.classList.toggle('sign', isSign);
+        bot.speech.textContent = `${bot.codename}: ${line}`;
+        bot.speech.classList.add('show');
+        setTimeout(() => bot.speech.classList.remove('show'), 2400);
+      }
+    }
+
+    function wanderStep(bot){
+      if(bot.fighting) return;
+      const slow = weather.hot ? 1.6 : 1;
+      const dist = randRange(60, 260);
+      let angle = randRange(0, Math.PI * 2);
+      let tx = bot.x + Math.cos(angle) * dist, ty = bot.y + Math.sin(angle) * dist;
+      if(mouseDocX !== null && Math.hypot(tx - mouseDocX, ty - mouseDocY) < 110){
+        angle += Math.PI;
+        tx = bot.x + Math.cos(angle) * dist; ty = bot.y + Math.sin(angle) * dist;
+      }
+      const duration = randRange(1800, 3400) * slow;
+      moveBotTo(bot, tx, ty, duration);
+      setTimeout(() => {
+        if(bot.fighting) return;
+        checkSectionHover(bot);
+        maybeSpeak(bot);
+        const pause = duration + randRange(1500, 4000) + (bot.inspecting ? 1500 : 0);
+        setTimeout(() => wanderStep(bot), pause);
+      }, duration);
+    }
+
+    function bindRPS(bot){
+      bot.el.style.pointerEvents = 'auto';
+      bot.el.addEventListener('dblclick', (e) => {
+        e.stopPropagation();
+        if(bot.fighting || document.querySelector('.amb-rps')) return;
+        const popup = document.createElement('div');
+        popup.className = 'amb-rps';
+        popup.style.left = (bot.x + 12) + 'px';
+        popup.style.top = (bot.y - 8) + 'px';
+        popup.innerHTML = '<div>Rock, paper, scissors?</div><div class="amb-rps-choices"></div>';
+        const choicesEl = popup.querySelector('.amb-rps-choices');
+        RPS.forEach(choice => {
+          const btn = document.createElement('button');
+          btn.textContent = choice;
+          btn.addEventListener('click', () => {
+            const cpu = RPS[Math.floor(Math.random() * RPS.length)];
+            const beats = (a, b) => (a === '✊' && b === '✌️') || (a === '✋' && b === '✊') || (a === '✌️' && b === '✋');
+            let result;
+            if(cpu === choice) result = 'Tie! ' + cpu;
+            else if(beats(choice, cpu)) result = 'You win! ' + cpu;
+            else result = bot.codename + ' wins! ' + cpu;
+            popup.innerHTML = `<div>${result}</div>`;
+            setTimeout(() => popup.remove(), 1400);
+          });
+          choicesEl.appendChild(btn);
+        });
+        document.body.appendChild(popup);
+        setTimeout(() => { if(document.body.contains(popup)) popup.remove(); }, 6000);
+      });
+    }
+
+    function createBot(i){
+      const team = i % 2 === 0 ? 'A' : 'B';
+      const palette = TEAM_COLORS[team];
+      const color = palette[Math.floor(i / 2) % palette.length];
+
+      const wrap = document.createElement('div');
+      wrap.className = 'amb-bot';
+      const face = document.createElement('div');
+      face.className = 'amb-bot-face';
+      const anim = document.createElement('div');
+      anim.className = 'amb-bot-anim';
+      anim.innerHTML = botSVG(color);
+      face.appendChild(anim);
+      wrap.appendChild(face);
+      const speech = document.createElement('div');
+      speech.className = 'amb-speech';
+      wrap.appendChild(speech);
+      const inspect = document.createElement('div');
+      inspect.className = 'amb-inspect';
+      inspect.textContent = '🔍';
+      wrap.appendChild(inspect);
+      const health = document.createElement('div');
+      health.className = 'amb-health';
+      const healthFill = document.createElement('div');
+      healthFill.className = 'amb-health-fill';
+      health.appendChild(healthFill);
+      wrap.appendChild(health);
+
+      const season = seasonalAccessory();
+      if(season){ wrap.classList.add('seasonal'); wrap.setAttribute('data-season', season); }
+      if(weather.rain){
+        const umbrella = document.createElement('div');
+        umbrella.className = 'amb-umbrella';
+        umbrella.textContent = '☂️';
+        wrap.appendChild(umbrella);
+      }
+
+      document.body.appendChild(wrap);
+      const bounds = docBounds();
+      const bot = {
+        el: wrap, face, anim, speech, inspect, health, healthFill, team,
+        codename: nextCodename(),
+        x: randRange(40, Math.max(80, bounds.w - 60)),
+        y: randRange(200, Math.max(400, bounds.h - 200)),
+        fighting: false, facingLeft: false, inspecting: false, hp: 3, wins: 0
+      };
+      wrap.style.left = bot.x + 'px';
+      wrap.style.top = bot.y + 'px';
+      bots.push(bot);
+      bindRPS(bot);
+      setTimeout(() => wanderStep(bot), i * 600);
+      return bot;
+    }
+
+    for(let i = 0; i < 5; i++) createBot(i);
+    fetchWeather();
+    window.__ambientBots = bots;
+
+    function spawnPowDoc(x, y){
+      const el = document.createElement('div');
+      el.className = 'pow-burst doc';
+      el.textContent = Math.random() < 0.5 ? 'POW!' : 'HIYA!';
+      el.style.left = (x + randRange(-12, 12)) + 'px';
+      el.style.top = (y + randRange(-12, 12)) + 'px';
+      el.style.setProperty('--pr', randRange(-14, 14) + 'deg');
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 700);
+    }
+
+    function updateHealthBar(bot){
+      const pct = Math.max(0, bot.hp) / 3 * 100;
+      bot.healthFill.style.width = pct + '%';
+      bot.healthFill.style.background = pct > 60 ? 'var(--green)' : pct > 30 ? 'var(--amber)' : 'var(--red)';
+    }
+
+    function strike(attacker, defender, type){
+      const limb = attacker.anim.querySelector(type === 'kick' ? '.cb-leg-r' : '.cb-arm-r');
+      attacker.anim.classList.remove('hop');
+      void attacker.anim.offsetWidth;
+      attacker.anim.classList.add('hop');
+      limb.classList.remove('kick', 'punch');
+      void limb.offsetWidth;
+      limb.classList.add(type);
+      defender.anim.classList.remove('recoil');
+      void defender.anim.offsetWidth;
+      defender.anim.classList.add('recoil');
+      defender.hp = Math.max(0, defender.hp - 1);
+      updateHealthBar(defender);
+      const contactX = (attacker.x + defender.x) / 2;
+      const contactY = (attacker.y + defender.y) / 2 + 8;
+      spawnPowDoc(contactX, contactY);
+    }
+
+    function maybeDropCostume(bot){
+      bot.wins++;
+      if(bot.wins % 3 === 0){
+        const costume = COSTUMES[Math.floor(Math.random() * COSTUMES.length)];
+        bot.el.classList.add('accessory');
+        bot.el.setAttribute('data-accessory', costume);
+      }
+    }
+
+    function showFightCam(a, b){
+      let panel = document.getElementById('botFightcam');
+      if(!panel){
+        panel = document.createElement('div');
+        panel.id = 'botFightcam';
+        panel.className = 'bot-fightcam';
+        panel.innerHTML = '<div class="fc-label">⚔ LIVE DUEL</div><div class="fc-row"><div class="fc-a"></div><span>VS</span><div class="fc-b"></div></div>';
+        document.body.appendChild(panel);
+      }
+      panel.querySelector('.fc-a').innerHTML = a.anim.innerHTML;
+      panel.querySelector('.fc-b').innerHTML = b.anim.innerHTML;
+      panel.classList.add('show');
+    }
+    function hideFightCam(){
+      document.getElementById('botFightcam')?.classList.remove('show');
+    }
+
+    function runFight(){
+      const idleA = bots.filter(b => !b.fighting && b.team === 'A');
+      const idleB = bots.filter(b => !b.fighting && b.team === 'B');
+      if(idleA.length < 1 || idleB.length < 1){ scheduleFight(); return; }
+      const a = idleA[Math.floor(Math.random() * idleA.length)];
+      const b = idleB[Math.floor(Math.random() * idleB.length)];
+
+      a.fighting = true; b.fighting = true;
+      a.hp = 3; b.hp = 3;
+      updateHealthBar(a); updateHealthBar(b);
+      a.health.classList.add('show'); b.health.classList.add('show');
+
+      const meetX = (a.x + b.x) / 2, meetY = (a.y + b.y) / 2;
+      const walkDuration = 1300;
+      moveBotTo(a, meetX - 22, meetY, walkDuration);
+      moveBotTo(b, meetX + 22, meetY, walkDuration);
+
+      setTimeout(() => {
+        setFacing(a, false); setFacing(b, true);
+        a.el.classList.remove('walking'); b.el.classList.remove('walking');
+        showFightCam(a, b);
+
+        function nextRound(){
+          if(a.hp <= 0 || b.hp <= 0){
+            const winner = a.hp <= 0 ? b : a;
+            const loser = winner === a ? b : a;
+            setTimeout(() => {
+              winner.anim.classList.add('victory');
+              loser.face.classList.add('defeat');
+              incrementFightCount();
+              maybeDropCostume(winner);
+              hideFightCam();
+              setTimeout(() => {
+                winner.anim.classList.remove('victory');
+                loser.face.classList.remove('defeat');
+                a.health.classList.remove('show'); b.health.classList.remove('show');
+                a.fighting = false; b.fighting = false;
+                wanderStep(a); wanderStep(b);
+              }, 1100);
+            }, 400);
+            return;
+          }
+          const attacker = Math.random() < 0.5 ? a : b;
+          const defender = attacker === a ? b : a;
+          strike(attacker, defender, Math.random() < 0.6 ? 'kick' : 'punch');
+          setTimeout(nextRound, 520);
+        }
+        setTimeout(nextRound, 200);
+      }, walkDuration + 80);
+    }
+
+    function scheduleFight(){
+      setTimeout(runFight, randRange(14000, 26000) * fightSpeedMultiplier);
+    }
+    scheduleFight();
+
+    // ---- settings panel: fight frequency + robot count ----
+    const settingsBtn = document.getElementById('botSettingsBtn');
+    const settingsPanel = document.getElementById('botSettingsPanel');
+    const freqInput = document.getElementById('botFightFreq');
+    const countInput = document.getElementById('botCount');
+    const countLabel = document.getElementById('botCountLabel');
+
+    settingsBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      settingsPanel?.classList.toggle('open');
+    });
+    document.addEventListener('click', (e) => {
+      if(settingsPanel?.classList.contains('open') && !settingsPanel.contains(e.target) && e.target !== settingsBtn){
+        settingsPanel.classList.remove('open');
+      }
+    });
+    freqInput?.addEventListener('input', () => {
+      const v = parseInt(freqInput.value, 10); // 1 = calmer, 2 = normal, 3 = chaotic
+      fightSpeedMultiplier = v === 1 ? 1.8 : v === 3 ? 0.5 : 1;
+    });
+    countInput?.addEventListener('input', () => {
+      const target = parseInt(countInput.value, 10);
+      if(countLabel) countLabel.textContent = target;
+      while(bots.length < target) createBot(bots.length);
+      while(bots.length > target){ const removed = bots.pop(); removed.el.remove(); }
+    });
+  })();
+
+  // ---- cheer squad: robots gather near the footer and celebrate when you reach out ----
+  (function(){
+    document.querySelectorAll('.contact-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const bots = (window.__ambientBots || []).filter(b => !b.fighting);
+        if(!bots.length) return;
+        const footer = document.querySelector('.foot');
+        const rect = footer ? footer.getBoundingClientRect() : null;
+        const targetY = rect ? rect.top + window.scrollY : document.documentElement.scrollHeight - 120;
+        const targetXBase = window.innerWidth / 2 + window.scrollX;
+        bots.slice(0, 4).forEach((bot, i) => {
+          bot.fighting = true;
+          const tx = targetXBase + (i - 1.5) * 34;
+          bot.el.style.transitionDuration = '900ms, 900ms';
+          bot.el.classList.add('walking');
+          bot.el.style.left = tx + 'px';
+          bot.el.style.top = targetY + 'px';
+          bot.x = tx; bot.y = targetY;
+          setTimeout(() => {
+            bot.el.classList.remove('walking');
+            bot.anim.classList.add('cheer');
+            setTimeout(() => {
+              bot.anim.classList.remove('cheer');
+              bot.fighting = false;
+            }, 1200);
+          }, 950);
+        });
+      });
+    });
+  })();
+
+  // ---- click-to-summon: click empty space to make a robot run over and wave ----
+  (function(){
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isTouch = window.matchMedia('(hover: none), (pointer: coarse)').matches;
+    if(reduceMotion || isTouch) return;
+    const { botSVG } = BotFX;
+    const palette = ['#3FB950', '#4FD1C5', '#FF9F1C', '#F85149', '#BC8CFF'];
+
+    document.addEventListener('click', (e) => {
+      if(e.target.closest('a, button, input, textarea, select, label, .chat-panel, .chat-fab, .chat-fab-label, .amb-bot, .amb-rps, .bot-settings-panel, .bot-settings-btn')) return;
+      summonBot(e.pageX, e.pageY);
+    });
+
+    function summonBot(x, y){
+      const wrap = document.createElement('div');
+      wrap.className = 'amb-bot';
+      wrap.style.opacity = '0';
+      wrap.style.transition = 'opacity .3s ease, left .6s ease, top .6s ease';
+      const face = document.createElement('div');
+      face.className = 'amb-bot-face';
+      const anim = document.createElement('div');
+      anim.className = 'amb-bot-anim';
+      anim.innerHTML = botSVG(palette[Math.floor(Math.random() * palette.length)]);
+      face.appendChild(anim);
+      wrap.appendChild(face);
+      document.body.appendChild(wrap);
+
+      const fromLeft = Math.random() < 0.5;
+      wrap.style.left = (x + (fromLeft ? -70 : 70)) + 'px';
+      wrap.style.top = (y - 24) + 'px';
+      face.classList.toggle('flip', !fromLeft);
+
+      requestAnimationFrame(() => {
+        wrap.style.opacity = '1';
+        wrap.classList.add('walking');
+        wrap.style.left = x + 'px';
+        wrap.style.top = (y - 30) + 'px';
+      });
+
+      setTimeout(() => {
+        wrap.classList.remove('walking');
+        anim.classList.add('wave');
+        setTimeout(() => {
+          wrap.style.opacity = '0';
+          setTimeout(() => wrap.remove(), 400);
+        }, 1300);
+      }, 650);
+    }
+  })();
+
+  // ---- konami code easter egg: boss robot appears, everyone dances ----
+  (function(){
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(reduceMotion) return;
+    const seq = ['arrowup', 'arrowup', 'arrowdown', 'arrowdown', 'arrowleft', 'arrowright', 'arrowleft', 'arrowright', 'b', 'a'];
+    let pos = 0;
+    document.addEventListener('keydown', (e) => {
+      const key = e.key.toLowerCase();
+      if(key === seq[pos]){
+        pos++;
+        if(pos === seq.length){ pos = 0; triggerBossDance(); }
+      } else {
+        pos = (key === seq[0]) ? 1 : 0;
+      }
+    });
+
+    function triggerBossDance(){
+      document.querySelectorAll('.amb-bot').forEach(el => {
+        el.classList.add('dance');
+        setTimeout(() => el.classList.remove('dance'), 3200);
+      });
+
+      const boss = document.createElement('div');
+      boss.className = 'amb-bot boss';
+      const face = document.createElement('div');
+      face.className = 'amb-bot-face';
+      const anim = document.createElement('div');
+      anim.className = 'amb-bot-anim';
+      anim.innerHTML = BotFX.botSVG('#FF9F1C');
+      face.appendChild(anim);
+      boss.appendChild(face);
+      boss.style.left = (window.scrollX + window.innerWidth / 2 - 20) + 'px';
+      boss.style.top = (window.scrollY + window.innerHeight / 2 - 25) + 'px';
+      boss.style.opacity = '0';
+      boss.style.transition = 'opacity .4s ease';
+      document.body.appendChild(boss);
+      requestAnimationFrame(() => { boss.style.opacity = '1'; anim.classList.add('victory'); });
+      setTimeout(() => {
+        boss.style.opacity = '0';
+        setTimeout(() => boss.remove(), 500);
+      }, 3200);
+    }
+  })();
+
+  // ---- ./connect dropdown ----
+  const connectBtn = document.getElementById('connectBtn');
+  const connectMenu = document.getElementById('connectMenu');
+  const connectCopyEmail = document.getElementById('connectCopyEmail');
+
+  function closeConnectMenu(){
+    connectMenu?.classList.remove('open');
+    connectBtn?.setAttribute('aria-expanded', 'false');
+  }
+  connectBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isOpen = connectMenu.classList.toggle('open');
+    connectBtn.setAttribute('aria-expanded', String(isOpen));
+  });
+  document.addEventListener('click', (e) => {
+    if(connectMenu?.classList.contains('open') && !connectMenu.contains(e.target) && e.target !== connectBtn){
+      closeConnectMenu();
+    }
+  });
+  document.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape') closeConnectMenu();
+  });
+  connectMenu?.querySelectorAll('a.connect-item').forEach(a => {
+    a.addEventListener('click', closeConnectMenu);
+  });
+  connectCopyEmail?.addEventListener('click', () => {
+    navigator.clipboard?.writeText('bonthunaveen1@gmail.com').then(() => {
+      const textEl = connectCopyEmail.querySelector('.ci-text');
+      const original = textEl.textContent;
+      textEl.textContent = 'Copied!';
+      connectCopyEmail.classList.add('copied');
+      setTimeout(() => {
+        textEl.textContent = original;
+        connectCopyEmail.classList.remove('copied');
+        closeConnectMenu();
+      }, 1200);
+    });
+  });
+
+  // ---- intro video: click-to-play modal ----
+  (function(){
+    const thumb = document.getElementById('introVideoThumb');
+    const modal = document.getElementById('videoModal');
+    const closeBtn = document.getElementById('videoModalClose');
+    const player = document.getElementById('introVideoPlayer');
+    if(!thumb || !modal || !player) return;
+
+    function openModal(){
+      modal.classList.add('open');
+      player.currentTime = 0;
+      player.play().catch(() => {});
+    }
+    function closeModal(){
+      modal.classList.remove('open');
+      player.pause();
+    }
+    thumb.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => { if(e.target === modal) closeModal(); });
+    document.addEventListener('keydown', (e) => { if(e.key === 'Escape' && modal.classList.contains('open')) closeModal(); });
+  })();
+</script>
+
+<script>
+(function(){
+  const wrap = document.getElementById('skillGlobe');
+  const svg  = document.getElementById('globeSvg');
+  if(!wrap || !svg) return;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // slug: simple-icons slug | label: display name | hex: brand color (no #)
+  const DEVICON = 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons';
+  const SKILLS = [
+    {slug:'python',        label:'Python',      hex:'3776AB'},
+    {slug:'fastapi',       label:'FastAPI',     hex:'009688'},
+    {label:'OpenAI',       hex:'E5E7EB'}, // simple-icons removed this logo on request — falls back to badge
+    {label:'Azure',        hex:'0089D6', url:`${DEVICON}/azure/azure-original.svg`},
+    {slug:'docker',        label:'Docker',      hex:'2496ED'},
+    {slug:'postgresql',    label:'PostgreSQL',  hex:'4169E1'},
+    {slug:'mysql',         label:'MySQL',       hex:'4479A1'},
+    {slug:'git',           label:'Git',         hex:'F05032'},
+    {slug:'github',        label:'GitHub',      hex:'E5E7EB'},
+    {slug:'linux',         label:'Linux',       hex:'FCC624'},
+    {label:'Windows',      hex:'00A4EF', url:`${DEVICON}/windows8/windows8-original.svg`},
+    {slug:'n8n',           label:'n8n',         hex:'EA4B71'},
+    {label:'AWS',          hex:'FF9900', url:`${DEVICON}/amazonwebservices/amazonwebservices-original-wordmark.svg`},
+    {label:'VS Code',      hex:'007ACC', url:`${DEVICON}/vscode/vscode-original.svg`},
+    {slug:'gnubash',       label:'Shell',       hex:'4EAA25'},
+  ];
+
+  // ---- build DOM nodes ----
+  const nodeEls = SKILLS.map(s => {
+    const el = document.createElement('div');
+    el.className = 'skill-node';
+
+    const iconBox = document.createElement('div');
+    iconBox.className = 'node-icon';
+
+    const img = document.createElement('img');
+    img.src = s.url || `https://cdn.simpleicons.org/${s.slug}/${s.hex}`;
+    img.alt = s.label;
+    img.loading = 'lazy';
+    img.onerror = function(){
+      const initials = s.label.replace(/[^A-Za-z0-9]/g,'').slice(0,2).toUpperCase();
+      const badge = document.createElement('span');
+      badge.className = 'node-fallback';
+      badge.textContent = initials;
+      badge.style.color = '#' + s.hex;
+      badge.style.borderColor = '#' + s.hex + '66';
+      iconBox.replaceChild(badge, img);
+    };
+    iconBox.appendChild(img);
+
+    const label = document.createElement('span');
+    label.textContent = s.label;
+
+    el.appendChild(iconBox);
+    el.appendChild(label);
+    wrap.appendChild(el);
+    return el;
+  });
+
+  // ---- fibonacci sphere distribution ----
+  const N = SKILLS.length;
+  const pts = [];
+  const gAngle = Math.PI * (3 - Math.sqrt(5));
+  for(let i=0;i<N;i++){
+    const y = 1 - (i/(N-1))*2;
+    const r = Math.sqrt(1 - y*y);
+    const theta = gAngle * i;
+    pts.push({ x: Math.cos(theta)*r, y: y, z: Math.sin(theta)*r });
+  }
+
+  // ---- edges: connect each node to its 3 nearest neighbours ----
+  const edges = [];
+  const seen = new Set();
+  pts.forEach((p,i)=>{
+    const dists = pts.map((q,j)=>({j, d: i===j?Infinity:((p.x-q.x)**2+(p.y-q.y)**2+(p.z-q.z)**2)}));
+    dists.sort((a,b)=>a.d-b.d);
+    dists.slice(0,3).forEach(({j})=>{
+      const key = i<j ? i+'-'+j : j+'-'+i;
+      if(!seen.has(key)){ seen.add(key); edges.push([i,j]); }
+    });
+  });
+
+  // create svg lines once, update coords each frame
+  const svgNS = 'http://www.w3.org/2000/svg';
+  const lineEls = edges.map(()=>{
+    const l = document.createElementNS(svgNS,'line');
+    l.setAttribute('stroke-width','0.75');
+    svg.appendChild(l);
+    return l;
+  });
+
+  let rotY = 0, rotX = 0.15;
+  let velY = reduceMotion ? 0 : 0.0028;
+  let dragging = false, lastX = 0, lastY = 0;
+
+  wrap.addEventListener('pointerdown', e=>{
+    dragging = true; wrap.classList.add('dragging');
+    lastX = e.clientX; lastY = e.clientY;
+    wrap.setPointerCapture(e.pointerId);
+  });
+  wrap.addEventListener('pointermove', e=>{
+    if(!dragging) return;
+    const dx = e.clientX - lastX, dy = e.clientY - lastY;
+    lastX = e.clientX; lastY = e.clientY;
+    rotY += dx * 0.005;
+    rotX = Math.max(-1.1, Math.min(1.1, rotX + dy * 0.005));
+  });
+  ['pointerup','pointerleave','pointercancel'].forEach(ev=>{
+    wrap.addEventListener(ev, ()=>{ dragging = false; wrap.classList.remove('dragging'); });
+  });
+
+  const sphereEl = document.getElementById('globeSphere');
+
+  function smoothstep(edge0, edge1, x){
+    const t = Math.min(1, Math.max(0, (x-edge0)/(edge1-edge0)));
+    return t*t*(3-2*t);
+  }
+
+  function frame(){
+    const rect = wrap.getBoundingClientRect();
+    const R = Math.min(rect.width, rect.height) * 0.34;
+    const perspective = R * 4.2;
+    const cosY = Math.cos(rotY), sinY = Math.sin(rotY);
+    const cosX = Math.cos(rotX), sinX = Math.sin(rotX);
+
+    if(sphereEl){
+      sphereEl.style.width = (R*1.94) + 'px';
+      sphereEl.style.height = (R*1.94) + 'px';
+      sphereEl.style.transform = 'translate(-50%,-50%)';
+    }
+
+    const projected = pts.map(p=>{
+      // rotate around Y then X
+      const x1 = p.x*cosY + p.z*sinY;
+      const z1 = -p.x*sinY + p.z*cosY;
+      const y1 = p.y*cosX - z1*sinX;
+      const z2 = p.y*sinX + z1*cosX;
+
+      const scale = perspective / (perspective + z2*R);
+      const nearness = (1 - z2) / 2; // 1 = closest to viewer, 0 = far side of sphere
+      return { sx: x1*R*scale, sy: y1*R*scale, scale, z: z2, nearness };
+    });
+
+    projected.forEach((pp, i)=>{
+      const el = nodeEls[i];
+      const vis = smoothstep(0.42, 0.62, pp.nearness);
+      el.style.transform = `translate(-50%,-50%) translate(${pp.sx}px, ${pp.sy}px) scale(${0.65 + pp.scale*0.55})`;
+      el.style.opacity = vis.toFixed(2);
+      el.style.zIndex = Math.round((1-pp.z)*1000);
+    });
+
+    edges.forEach(([a,b], i)=>{
+      const A = projected[a], B = projected[b];
+      const l = lineEls[i];
+      l.setAttribute('x1', rect.width/2 + A.sx);
+      l.setAttribute('y1', rect.height/2 + A.sy);
+      l.setAttribute('x2', rect.width/2 + B.sx);
+      l.setAttribute('y2', rect.height/2 + B.sy);
+      const nearness = (A.nearness + B.nearness) / 2;
+      const vis = smoothstep(0.4, 0.6, nearness);
+      l.style.opacity = (vis * 0.4).toFixed(2);
+    });
+
+    if(!dragging) rotY += velY;
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+
+</body>
+</html>
